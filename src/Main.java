@@ -27,10 +27,10 @@ public class Main {
 /*
 
     Aplicatie gestionarea unui lant de restaurante
-    - logare din perspectiva unui user
+    
+    - logare din perspectiva unui angajat/client/admin
         => username
         => parola
-
     - iesire din sistem 
 
     - Admin
@@ -46,24 +46,31 @@ public class Main {
         => modifica numele
         => modifica prenumele
         => modifica 
+        => afisare subordonati
 
     - Sef-Bucatar
-        => ponteaza orele muncite
+        => ponteaza orele muncite -> interfata comuna?
 
     - Barman
-        => ponteaza orele muncite
+        => ponteaza orele muncite -> interfata comuna?
 
     - Ospatar
-        => ponteaza orele muncite
-        => adauga comanda in sistem
+        => ponteaza orele muncite -> interfata comuna?
+        => modifica statusul unei comenzi
 
     - Client
         => poate sa initieze comenzi in aplicatie
             => selecteaza restaurantul
             => selecteaza data_livrare
             => selecteaza produse: preparate + bautura
+        => anuleaza comanda
         
     - Comanda
         => un tip de date
+
+    - Produs
+        - Preparat
+        - Bautura
+
 */
 
