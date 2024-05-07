@@ -23,18 +23,11 @@ public class Main {
 }
 
 // TODO: baza de date -> oricate caractere pt VARCHAR
-// TODO: oras + tara -> pentru restaurant
 
 /*
 
     Aplicatie gestionarea unui lant de restaurante
     - logare din perspectiva unui user
-        v1:
-        => alegere restaurant
-        => alegere tip angajat
-        => alegere dupa id + nume + prenume + numar_telefon
-        
-        v2:
         => username
         => parola
 

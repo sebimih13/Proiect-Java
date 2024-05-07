@@ -8,6 +8,8 @@ CREATE TABLE restaurant
 
     nume VARCHAR(50) NOT NULL,
     nr_stele INT(1) UNSIGNED,
+    oras VARCHAR(150) NOT NULL,
+    strada VARCHAR(150) NOT NULL,
     nr_telefon VARCHAR(20),
 
     PRIMARY KEY (id_restaurant),
