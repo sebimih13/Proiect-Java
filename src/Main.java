@@ -1,4 +1,7 @@
+import model.Angajat;
+
 import java.sql.SQLException;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,13 +15,6 @@ public class Main {
 
         // run AppService
         AppService.getInstance().run();
-
-        try {
-            Database.getInstance().getRestaurants();
-        }
-        catch (SQLException e) {
-            // TODO
-        }
     }
 }
 
