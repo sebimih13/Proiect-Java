@@ -67,7 +67,7 @@ public class Manager extends Angajat {
                     break;
 
                 case 3:
-                    // TODO
+                    deleteSubodonat();
                     break;
 
                 case 4:
@@ -233,19 +233,40 @@ public class Manager extends Angajat {
         return null;
     }
 
-    private String getInputString(String nume) {
-        String s = null;
-        while (true) {
-            System.out.print(nume + ": ");
-            s = scanner.nextLine();
-            if (s.isEmpty()) {
-                System.out.println("Trebuie sa contina cel putin un caracter!");
-                continue;
-            }
-            break;
+    private void deleteSubodonat() {
+        System.out.println("\nAlegeti subordonatul:");
+
+        for (int i = 0; i < subordonati.size(); i++) {
+            System.out.println(subordonati.get(i).getID() + " -> " + subordonati.get(i));
         }
 
-        return s;
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < subordonati.size(); i++) {
+            if (subordonati.get(i).getID() == option) {
+                try {
+                    Database.getInstance().deleteAngajat(option);
+                    subordonati.remove(i);
+                    System.out.println("Angajatul a fost sters din baza de date");
+                    return;
+                }
+                catch (SQLException e) {
+                    System.out.println("FAILED -> deleteSubordonat()");
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
     }
 }
 

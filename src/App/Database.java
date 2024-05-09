@@ -185,5 +185,44 @@ public class Database {
             preparedStatement.executeUpdate();
         }
     }
+
+    public void deleteAngajat(int ID) throws SQLException {
+        angajati.remove(ID);
+
+        String SQLDeleteAngajat = "DELETE FROM angajat" + "\n"
+                                + "WHERE id_angajat = ?;";
+
+        String SQLDeleteManager = "DELETE FROM manager" + "\n"
+                                + "WHERE id_angajat = ?;";
+
+        String SQLDeleteOspatar = "DELETE FROM ospatar" + "\n"
+                                + "WHERE id_angajat = ?;";
+
+        String SQLDeleteSefBucatar = "DELETE FROM sef_bucatar" + "\n"
+                                + "WHERE id_angajat = ?;";
+
+        String SQLDeleteBarman = "DELETE FROM barman" + "\n"
+                                + "WHERE id_angajat = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLDeleteManager);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = connection.prepareStatement(SQLDeleteOspatar);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = connection.prepareStatement(SQLDeleteSefBucatar);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = connection.prepareStatement(SQLDeleteBarman);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = connection.prepareStatement(SQLDeleteAngajat);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+    }
 }
 
