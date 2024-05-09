@@ -21,6 +21,7 @@ public class AppService {
 
     private AppService() {
         isRunning = true;
+
         scanner = new Scanner(System.in);
     }
 
@@ -113,7 +114,8 @@ public class AppService {
                     System.out.println("Datele introduse sunt gresite");
                 }
                 else {
-                    AngajatMenu();
+                    System.out.println("\nBine ai revenit!");
+                    angajatAutentificat.menu();
                 }
                 break;
 
@@ -194,11 +196,6 @@ public class AppService {
 
         // TODO: adaugare si celelalte atribute
         // TODO: adaugare in baza de date
-    }
-
-    private void AngajatMenu() {
-        System.out.println("Bine ai revenit!");
-        // TODO
     }
 
     private Angajat getAngajat(String username, String password) {

@@ -34,15 +34,15 @@ public class Main {
         => adauga angajati
 
     - Manager - limitat doar la restaurantul lui
-        => adauga angajati noi -> Sef-Bucatar, Barman, Ospatar
-        => modifica manager
-        => modifica restaurantul
-        => modifica salariul
-        => modifica telefonul
-        => modifica numele
-        => modifica prenumele
-        => modifica 
         => afisare subordonati
+        => adauga angajati noi -> Sef-Bucatar, Barman, Ospatar
+        => sterge angajat
+        => modifica restaurantul
+        => modifica date angajat
+            => modifica telefonul
+            => modifica numele
+            => modifica prenumele
+            => modifica
 
     - Sef-Bucatar
         => ponteaza orele muncite -> interfata comuna?

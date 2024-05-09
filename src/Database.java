@@ -101,16 +101,19 @@ public class Database {
             rs = connection.prepareStatement(SQLSefBucatar).executeQuery();
             while (rs.next()) {
                 angajati.put(rs.getInt(1), new SefBucatar(rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
+                ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
             }
 
             rs = connection.prepareStatement(SQLBarman).executeQuery();
             while (rs.next()) {
                 angajati.put(rs.getInt(1), new Barman(rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
+                ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
             }
 
             rs = connection.prepareStatement(SQLOspatar).executeQuery();
             while (rs.next()) {
                 angajati.put(rs.getInt(1), new Ospatar(rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
+                ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
             }
 
             // clienti

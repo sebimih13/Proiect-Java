@@ -1,6 +1,6 @@
 package model;
 
-public class Angajat {
+public abstract class Angajat {
     protected String username;
     protected String password;
 
@@ -53,6 +53,14 @@ public class Angajat {
 
     public Restaurant getRestaurant() {
         return restaurant;
+    }
+
+    public abstract void menu();
+
+    // TODO: alta functie -> afisareDate()
+    @Override
+    public String toString() {
+        return nume + " " + prenume + " " + nrTelefon;
     }
 }
 

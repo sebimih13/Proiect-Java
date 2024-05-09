@@ -7,5 +7,18 @@ public class Ospatar extends Angajat {
         super(username, password, nume, prenume, salariu, nrTelefon, manager, restaurant);
         this.nivelEngleza = nivelEngleza;
     }
+
+    @Override
+    public final void menu() {
+        while (true) {
+            // TODO
+        }
+    }
+
+    // TODO: alta functie -> afisareDate()
+    @Override
+    public String toString() {
+        return "Ospatar: " + super.toString();
+    }
 }
 

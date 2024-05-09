@@ -11,5 +11,18 @@ public class SefBucatar extends Angajat {
     public String getSpecializare() {
         return specializare;
     }
+
+    @Override
+    public final void menu() {
+        while (true) {
+            // TODO
+        }
+    }
+
+    // TODO: alta functie -> afisareDate()
+    @Override
+    public String toString() {
+        return "Sef Bucatar: " + super.toString();
+    }
 }
 
