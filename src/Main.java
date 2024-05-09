@@ -1,19 +1,17 @@
-import model.Angajat;
-
-import java.sql.SQLException;
-import java.util.List;
+import App.AppService;
+import App.Database;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
 
-        // init Database
+        // init App.Database
         Database.getInstance();
 
-        // init AppService
+        // init App.AppService
         AppService.getInstance();
 
-        // run AppService
+        // run App.AppService
         AppService.getInstance().run();
     }
 }

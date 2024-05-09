@@ -1,18 +1,27 @@
 package model;
 
 public abstract class Angajat {
-    protected String username;
-    protected String password;
+    private Integer ID;
 
-    protected String nume;
-    protected String prenume;
-    protected int salariu;
-    protected String nrTelefon;
+    private String username;
+    private String password;
 
-    protected Angajat manager;
-    protected Restaurant restaurant;
+    private String nume;
+    private String prenume;
+    private int salariu;
+    private String nrTelefon;
 
-    public Angajat(String username, String password, String nume, String prenume, int salariu, String nrTelefon, Angajat manager, Restaurant restaurant) {
+    private Angajat manager;
+    private Restaurant restaurant;
+
+    protected static Integer maxIDAngajat;
+
+    static {
+        maxIDAngajat = 1;
+    }
+
+    public Angajat(Integer ID, String username, String password, String nume, String prenume, int salariu, String nrTelefon, Angajat manager, Restaurant restaurant) {
+        this.ID = ID;
         this.username = username;
         this.password = password;
         this.nume = nume;
@@ -21,6 +30,12 @@ public abstract class Angajat {
         this.nrTelefon = nrTelefon;
         this.manager = manager;
         this.restaurant = restaurant;
+
+        maxIDAngajat = Integer.max(maxIDAngajat, ID);
+    }
+
+    public Integer getID() {
+        return ID;
     }
 
     public String getUsername() {

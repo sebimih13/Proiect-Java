@@ -1,7 +1,8 @@
+package App;
+
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Map;
-import java.util.HashMap;
 
 import model.*;
 
@@ -136,6 +137,7 @@ public class AppService {
                 System.out.println("username trebuie sa contina cel putin un caracter!");
                 continue;
             }
+            // TODO: verificare sa nu existe deja in baza de date
             break;
         }
 
@@ -180,6 +182,7 @@ public class AppService {
                 System.out.println("email trebuie sa contina cel putin un caracter!");
                 continue;
             }
+            // TODO: verificare sa nu existe deja in baza de date
             break;
         }
 
@@ -191,6 +194,7 @@ public class AppService {
                 System.out.println("numarul de telefon trebuie sa contina fix 10 cifre!");
                 continue;
             }
+            // TODO: verificare sa nu existe deja in baza de date
             break;
         }
 

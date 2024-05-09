@@ -1,4 +1,4 @@
-import model.Restaurant;
+package App;
 
 import java.sql.*;
 import java.util.Map;
@@ -89,30 +89,30 @@ public class Database {
             // restaurante
             ResultSet rs = connection.prepareStatement(SQLRestaurant).executeQuery();
             while (rs.next()) {
-                restaurante.put(rs.getInt(1), new Restaurant(rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6)));
+                restaurante.put(rs.getInt(1), new Restaurant(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6)));
             }
 
             // angajati
             rs = connection.prepareStatement(SQLManager).executeQuery();
             while (rs.next()) {
-                angajati.put(rs.getInt(1), new Manager(rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), null, restaurante.get(rs.getInt(3)), rs.getString(10)));
+                angajati.put(rs.getInt(1), new Manager(rs.getInt(1), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), null, restaurante.get(rs.getInt(3)), rs.getString(10)));
             }
 
             rs = connection.prepareStatement(SQLSefBucatar).executeQuery();
             while (rs.next()) {
-                angajati.put(rs.getInt(1), new SefBucatar(rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
+                angajati.put(rs.getInt(1), new SefBucatar(rs.getInt(1), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
                 ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
             }
 
             rs = connection.prepareStatement(SQLBarman).executeQuery();
             while (rs.next()) {
-                angajati.put(rs.getInt(1), new Barman(rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
+                angajati.put(rs.getInt(1), new Barman(rs.getInt(1), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
                 ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
             }
 
             rs = connection.prepareStatement(SQLOspatar).executeQuery();
             while (rs.next()) {
-                angajati.put(rs.getInt(1), new Ospatar(rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
+                angajati.put(rs.getInt(1), new Ospatar(rs.getInt(1), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
                 ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
             }
 
@@ -122,6 +122,67 @@ public class Database {
         catch (SQLException e) {
             System.out.println("exceptie SQLException");
             e.printStackTrace();
+        }
+    }
+
+    public void addAngajat(Angajat angajat) throws SQLException {
+        angajati.put(angajat.getID(), angajat);
+
+        String SQLInsertAngajat = "INSERT INTO ANGAJAT (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)" + "\n"
+                                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLInsertAngajat);
+        preparedStatement.setInt(1, angajat.getID());
+        preparedStatement.setInt(2, angajat.getManager().getID());
+        preparedStatement.setInt(3, angajat.getRestaurant().getID());
+        preparedStatement.setString(4, angajat.getUsername());
+        preparedStatement.setString(5, angajat.getPassword());
+        preparedStatement.setString(6, angajat.getNume());
+        preparedStatement.setString(7, angajat.getPrenume());
+        preparedStatement.setInt(8, angajat.getSalariu());
+        preparedStatement.setString(9, angajat.getNrTelefon());
+
+        preparedStatement.executeUpdate();
+
+        if (angajat instanceof Manager) {
+            String SQLInsertManager = "INSERT INTO manager (id_angajat, nivel_educatie)" + "\n"
+                                    + "VALUES (?, ?);";
+
+            preparedStatement = connection.prepareStatement(SQLInsertManager);
+            preparedStatement.setInt(1, angajat.getID());
+            preparedStatement.setString(2, ((Manager) angajat).getNivelEducatie());
+
+            preparedStatement.executeUpdate();
+        }
+        else if (angajat instanceof Ospatar) {
+            String SQLInsertOspatar = "INSERT INTO ospatar (id_angajat, nivel_engleza)" + "\n"
+                                    + "VALUES (?, ?);";
+
+            preparedStatement = connection.prepareStatement(SQLInsertOspatar);
+            preparedStatement.setInt(1, angajat.getID());
+            preparedStatement.setString(2, ((Ospatar) angajat).getNivelEngleza());
+
+            preparedStatement.executeUpdate();
+        }
+        else if (angajat instanceof SefBucatar) {
+            String SQLInsertSefBucatar = "INSERT INTO sef_bucatar (id_angajat, specializare)" + "\n"
+                                       + "VALUES (?, ?);";
+
+            preparedStatement = connection.prepareStatement(SQLInsertSefBucatar);
+            preparedStatement.setInt(1, angajat.getID());
+            preparedStatement.setString(2, ((SefBucatar) angajat).getSpecializare());
+
+            preparedStatement.executeUpdate();
+        }
+        else if (angajat instanceof Barman) {
+            String SQLInsertBarman = "INSERT INTO barman (id_angajat, specializare)" + "\n"
+                                   + "VALUES (?, ?);";
+
+            preparedStatement = connection.prepareStatement(SQLInsertBarman);
+            preparedStatement.setInt(1, angajat.getID());
+            preparedStatement.setString(2, ((Barman) angajat).getSpecializare());
+
+            preparedStatement.executeUpdate();
         }
     }
 }
