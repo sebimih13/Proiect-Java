@@ -188,40 +188,40 @@ CREATE TABLE PREPARA
 INSERT INTO restaurant (id_restaurant, nume, nr_stele, oras, strada, nr_telefon)
 VALUES (10, 'International Bistro', 4, 'Bucuresti', 'Strada Magnolia nr. 54', '0775570151');
 
-INSERT INTO ANGAJAT (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
 VALUES (1, NULL, 10, 'stoica_vlad', '123', 'Stoica', 'Vlad', 9000, '0720111111');
 
-INSERT INTO MANAGER (id_angajat, nivel_educatie)
+INSERT INTO manager (id_angajat, nivel_educatie)
 VALUES (1, 'ASE - Facultatea de administrare a afacerilor');
 
-INSERT INTO ANGAJAT (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
 VALUES (2, 1, 10, 'd_ana', '123', 'Dumitrescu', 'Ana', 4500, '0720111222');
 
-INSERT INTO OSPATAR (id_angajat, nivel_engleza)
+INSERT INTO ospatar (id_angajat, nivel_engleza)
 VALUES (2, 'B2');
 
-INSERT INTO ANGAJAT (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
 VALUES (3, 1, 10, 'petrescu', '123', 'Petrescu', 'Ionela', 7000, '0720100333');
 
-INSERT INTO SEF_BUCATAR (id_angajat, specializare)
+INSERT INTO sef_bucatar (id_angajat, specializare)
 VALUES (3, 'Bucataria din Romania');
 
-INSERT INTO ANGAJAT (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
 VALUES (4, 1, 10, 'preda_mihai', '123', 'Preda', 'Mihai', 7500, '0720111444');
 
-INSERT INTO SEF_BUCATAR (id_angajat, specializare)
+INSERT INTO sef_bucatar (id_angajat, specializare)
 VALUES (4, 'Bucataria din Italia');
 
-INSERT INTO ANGAJAT (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
 VALUES (5, 1, 10, 'ga', '123', 'Georgescu', 'Adrian', 4500, '0720111555');
 
-INSERT INTO BARMAN (id_angajat, specializare)
+INSERT INTO barman (id_angajat, specializare)
 VALUES (5, 'Cocktail');
 
-INSERT INTO ANGAJAT (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
 VALUES (6, 1, 10, 'im', '123', 'Ionescu', 'Marius', 5000, '0720111666');
 
-INSERT INTO BARMAN (id_angajat, specializare)
+INSERT INTO barman (id_angajat, specializare)
 VALUES (6, 'Milkshake');
 
 -- RESTAURANT 20

@@ -1,5 +1,10 @@
 package model;
 
+import App.Database;
+
+import java.sql.SQLException;
+import java.util.Scanner;
+
 public abstract class Angajat {
     private Integer ID;
 
@@ -15,6 +20,8 @@ public abstract class Angajat {
     private Restaurant restaurant;
 
     protected static Integer maxIDAngajat;
+
+    protected final Scanner scanner;
 
     static {
         maxIDAngajat = 1;
@@ -32,6 +39,7 @@ public abstract class Angajat {
         this.restaurant = restaurant;
 
         maxIDAngajat = Integer.max(maxIDAngajat, ID);
+        scanner = new Scanner(System.in);
     }
 
     public Integer getID() {
@@ -76,6 +84,32 @@ public abstract class Angajat {
     @Override
     public String toString() {
         return nume + " " + prenume + " " + nrTelefon;
+    }
+
+    public void editSalariu() {
+        Integer salariuNou = null;
+        while (true) {
+            System.out.print("salariu: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("salariul trebuie sa fie un numar intreg!");
+                scanner.next();
+                continue;
+            }
+
+            salariuNou = scanner.nextInt();
+            scanner.nextLine();
+            break;
+        }
+
+        this.salariu = salariuNou;
+        try {
+            Database.getInstance().editAngajat("salariu", salariuNou, this.ID);
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editSalariu()");
+            e.printStackTrace();
+        }
     }
 }
 

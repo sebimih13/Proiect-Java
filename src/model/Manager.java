@@ -10,14 +10,10 @@ public class Manager extends Angajat {
     private String nivelEducatie;
     private ArrayList<Angajat> subordonati;
 
-    private final Scanner scanner;
-
     public Manager(Integer ID, String username, String password, String nume, String prenume, int salariu, String nrTelefon, Angajat manager, Restaurant restaurant, String nivelEducatie) {
         super(ID, username, password, nume, prenume, salariu, nrTelefon, manager, restaurant);
         this.nivelEducatie = nivelEducatie;
         subordonati = new ArrayList<>();
-
-        scanner = new Scanner(System.in);
     }
 
     public String getNivelEducatie() {
@@ -71,7 +67,7 @@ public class Manager extends Angajat {
                     break;
 
                 case 4:
-                    // TODO
+                    modifySubordonat();
                     break;
 
                 case 5:
@@ -267,6 +263,73 @@ public class Manager extends Angajat {
         }
 
         System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+    }
+
+    public void modifySubordonat() {
+        System.out.println("\nAlegeti subordonatul:");
+
+        for (int i = 0; i < subordonati.size(); i++) {
+            System.out.println(subordonati.get(i).getID() + " -> " + subordonati.get(i));
+        }
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int optionSubordonat = scanner.nextInt();
+        scanner.nextLine();
+
+        Angajat subordonat = null;
+        for (int i = 0; i < subordonati.size(); i++) {
+            if (subordonati.get(i).getID() == optionSubordonat) {
+                subordonat = subordonati.get(i);
+            }
+        }
+
+        if (subordonat == null) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            return;
+        }
+
+        boolean modificareEfectuata = false;
+
+        while (!modificareEfectuata) {
+            System.out.println("\nAlegeti ce vreti sa modificati:");
+            System.out.println("1. Salariul");
+            System.out.println("2. Numar telefon");
+
+            System.out.print("Optiune: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+                scanner.next();
+                continue;
+            }
+
+            int option = scanner.nextInt();
+            scanner.nextLine();
+
+            if (option < 1 || 2 < option) {
+                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+                continue;
+            }
+
+            switch (option) {
+                case 1:
+                    subordonat.editSalariu();
+                    modificareEfectuata = true;
+                    System.out.println("Salariul a fost modificat!");
+                    break;
+
+                case 2:
+                    // TODO
+                    break;
+            }
+        }
     }
 }
 

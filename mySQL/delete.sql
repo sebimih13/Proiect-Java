@@ -68,8 +68,12 @@ SELECT * FROM prepara;
 -- TEST
 -- ------
 
-SELECT a.id_angajat, a.id_manager, a.id_restaurant, a.username, a.password, a.nume, a.prenume, a.salariu, a.nr_telefon, sb.specializare
-FROM angajat a JOIN barman sb ON (a.id_angajat = sb.id_angajat);
+SELECT a.id_angajat, a.id_manager, a.id_restaurant, a.username, a.password, a.nume, a.prenume, a.salariu, a.nr_telefon
+FROM angajat a JOIN manager sb ON (a.id_angajat = sb.id_angajat);
 
 SELECT *
 FROM restaurant;
+
+DELETE FROM angajat
+WHERE id_angajat = 7;
+

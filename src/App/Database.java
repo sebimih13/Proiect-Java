@@ -224,5 +224,16 @@ public class Database {
         preparedStatement.setInt(1, ID);
         preparedStatement.executeUpdate();
     }
+
+    public void editAngajat(String attr, Integer value, Integer ID) throws SQLException {
+        String SQLEditAngajat = "UPDATE angajat" + "\n"
+                              + "SET " + attr + " = ?" + "\n"
+                              + "WHERE id_angajat = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLEditAngajat);
+        preparedStatement.setInt(1, value);
+        preparedStatement.setInt(2, ID);
+        preparedStatement.executeUpdate();
+    }
 }
 

@@ -40,7 +40,7 @@ public class Main {
             => modifica telefonul
             => modifica numele
             => modifica prenumele
-            => modifica
+            => modifica salariul
 
     - Sef-Bucatar
         => ponteaza orele muncite -> interfata comuna?
