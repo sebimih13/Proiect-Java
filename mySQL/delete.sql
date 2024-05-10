@@ -1,6 +1,6 @@
---------------------
+-- ------------------
 -- STERGERE TABELE
---------------------
+-- ------------------
 
 DROP TABLE prepara;
 DROP TABLE gateste;
@@ -69,11 +69,15 @@ SELECT * FROM prepara;
 -- ------
 
 SELECT a.id_angajat, a.id_manager, a.id_restaurant, a.username, a.password, a.nume, a.prenume, a.salariu, a.nr_telefon
-FROM angajat a JOIN manager sb ON (a.id_angajat = sb.id_angajat);
+FROM angajat a JOIN ospatar sb ON (a.id_angajat = sb.id_angajat);
 
 SELECT *
 FROM restaurant;
 
 DELETE FROM angajat
 WHERE id_angajat = 7;
+
+UPDATE angajat
+SET salariu = 4000
+WHERE id_angajat = 2;
 

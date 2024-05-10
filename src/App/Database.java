@@ -17,6 +17,7 @@ public class Database {
 
     private Map<Integer, Restaurant> restaurante;
     private Map<Integer, Angajat> angajati;
+    private Map<Integer, Produs> produse;
 
     // TODO: bloc normal? / bloc static? / constructor?
     static {
@@ -225,13 +226,85 @@ public class Database {
         preparedStatement.executeUpdate();
     }
 
-    public void editAngajat(String attr, Integer value, Integer ID) throws SQLException {
-        String SQLEditAngajat = "UPDATE angajat" + "\n"
-                              + "SET " + attr + " = ?" + "\n"
-                              + "WHERE id_angajat = ?;";
+    public void addProdus(Produs produs) throws SQLException {
+        produse.put(produs.getID(), produs);
 
-        PreparedStatement preparedStatement = connection.prepareStatement(SQLEditAngajat);
+        String SQLInsertProdus = "INSERT INTO produs (id_produs, nume, descriere, pret)" + "\n"
+                               + "VALUES (?, ?, ?, ?);";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLInsertProdus);
+        preparedStatement.setInt(1, produs.getID());
+        preparedStatement.setString(2, produs.getNume());
+        preparedStatement.setString(3, produs.getDescriere());
+        preparedStatement.setInt(4, produs.getPret());
+
+        preparedStatement.executeUpdate();
+
+        if (produs instanceof Preparat) {
+            String SQLInsertPreparat = "INSERT INTO preparat (id_produs, grame)" + "\n"
+                                     + "VALUES (?, ?);";
+
+            preparedStatement = connection.prepareStatement(SQLInsertPreparat);
+            preparedStatement.setInt(1, produs.getID());
+            preparedStatement.setInt(2, ((Preparat) produs).getGrame());
+
+            preparedStatement.executeUpdate();
+        }
+        else if (produs instanceof Bautura) {
+            String SQLInsertBautura = "INSERT INTO bautura (id_produs, litri)" + "\n"
+                                    + "VALUES (?, ?);";
+
+            preparedStatement = connection.prepareStatement(SQLInsertBautura);
+            preparedStatement.setInt(1, produs.getID());
+            preparedStatement.setInt(2, ((Bautura) produs).getLitri());
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public void deleteProdus(int ID) throws SQLException {
+        produse.remove(ID);
+
+        String SQLDeleteProdus = "DELETE FROM produs" + "\n"
+                               + "WHERE id_produs = ?;";
+
+        String SQLDeletePreparat = "DELETE FROM preparat" + "\n"
+                                 + "WHERE id_produs = ?;";
+
+        String SQLDeleteBautura = "DELETE FROM bautura" + "\n"
+                                + "WHERE id_produs = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLDeleteProdus);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = connection.prepareStatement(SQLDeletePreparat);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = connection.prepareStatement(SQLDeleteBautura);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+    }
+
+    public void editIntValue(String tabel, String StringID, String attr, Integer value, Integer ID) throws SQLException {
+        String SQLEdit = "UPDATE " + tabel + "\n"
+                       + "SET " + attr + " = ?" + "\n"
+                       + "WHERE " + StringID + " = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLEdit);
         preparedStatement.setInt(1, value);
+        preparedStatement.setInt(2, ID);
+        preparedStatement.executeUpdate();
+    }
+
+    public void editStringValue(String tabel, String StringID, String attr, String value, Integer ID) throws  SQLException {
+        String SQLEdit = "UPDATE " + tabel + "\n"
+                       + "SET " + attr + " = ?" + "\n"
+                       + "WHERE " + StringID + " = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLEdit);
+        preparedStatement.setString(1, value);
         preparedStatement.setInt(2, ID);
         preparedStatement.executeUpdate();
     }

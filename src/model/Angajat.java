@@ -80,10 +80,112 @@ public abstract class Angajat {
 
     public abstract void menu();
 
+    public abstract void editareDatePersonaleMenu();
+
     // TODO: alta functie -> afisareDate()
     @Override
     public String toString() {
-        return nume + " " + prenume + " " + nrTelefon;
+        return nume + " " + prenume + " " + nrTelefon + " -> " + salariu + " LEI";
+    }
+
+    public void editUsername() {
+        String usernameNou = null;
+        while (true) {
+            System.out.print("username: ");
+
+            usernameNou = scanner.nextLine();
+            if (usernameNou.isEmpty()) {
+                System.out.println("username trebuie sa contina cel putin un caracter!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("angajat", "id_angajat", "username", usernameNou, this.ID);
+            this.username = usernameNou;
+            System.out.println("username a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editUsername()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editPassword() {
+        String passwordNou = null;
+        while (true) {
+            System.out.print("password: ");
+
+            passwordNou = scanner.nextLine();
+            if (passwordNou.isEmpty()) {
+                System.out.println("password trebuie sa contina cel putin un caracter!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("angajat", "id_angajat", "password", passwordNou, this.ID);
+            this.username = passwordNou;
+            System.out.println("password a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editPassword()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editNume() {
+        String numeNou = null;
+        while (true) {
+            System.out.print("nume: ");
+
+            numeNou = scanner.nextLine();
+            if (numeNou.isEmpty()) {
+                System.out.println("numele trebuie sa contina cel putin un caracter!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("angajat", "id_angajat", "nume", numeNou, this.ID);
+            this.nume = numeNou;
+            System.out.println("numele a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editNume()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editPrenume() {
+        String prenumeNou = null;
+        while (true) {
+            System.out.print("prenume: ");
+
+            prenumeNou = scanner.nextLine();
+            if (prenumeNou.isEmpty()) {
+                System.out.println("prenumele trebuie sa contina cel putin un caracter!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("angajat", "id_angajat", "prenume", prenumeNou, this.ID);
+            this.prenume = prenumeNou;
+            System.out.println("prenumele a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editPrenume()");
+            e.printStackTrace();
+        }
     }
 
     public void editSalariu() {
@@ -102,12 +204,38 @@ public abstract class Angajat {
             break;
         }
 
-        this.salariu = salariuNou;
         try {
-            Database.getInstance().editAngajat("salariu", salariuNou, this.ID);
+            Database.getInstance().editIntValue("angajat", "id_angajat", "salariu", salariuNou, this.ID);
+            this.salariu = salariuNou;
+            System.out.println("salariul a fost modificat cu succes!");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editSalariu()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editNrTelefon() {
+        String nrTelefonNou = null;
+        while (true) {
+            System.out.print("numar telefon: ");
+
+            nrTelefonNou = scanner.nextLine();
+            if (nrTelefon.length() != 10 || !nrTelefon.matches("[0-9]+")) {
+                System.out.println("numarul de telefon trebuie sa contina fix 10 cifre!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("angajat", "id_angajat", "nr_telefon", nrTelefonNou, this.ID);
+            this.nrTelefon = nrTelefonNou;
+            System.out.println("numarul de telefon a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editNrTelefon()");
             e.printStackTrace();
         }
     }

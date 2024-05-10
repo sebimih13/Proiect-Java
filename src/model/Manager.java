@@ -13,7 +13,7 @@ public class Manager extends Angajat {
     public Manager(Integer ID, String username, String password, String nume, String prenume, int salariu, String nrTelefon, Angajat manager, Restaurant restaurant, String nivelEducatie) {
         super(ID, username, password, nume, prenume, salariu, nrTelefon, manager, restaurant);
         this.nivelEducatie = nivelEducatie;
-        subordonati = new ArrayList<>();
+        this.subordonati = new ArrayList<>();
     }
 
     public String getNivelEducatie() {
@@ -28,8 +28,9 @@ public class Manager extends Angajat {
             System.out.println("1. Afisare subordonati");
             System.out.println("2. Adaugare angajat nou in restaurant");
             System.out.println("3. Sterge angajat din restaurant");
-            System.out.println("4. Modifica datele unui angajat");
-            System.out.println("5. Log out");
+            System.out.println("4. Modifica salariul unui angajat");
+            System.out.println("5. Editare date personale");
+            System.out.println("6. Log out");
 
             System.out.print("Optiune: ");
 
@@ -67,11 +68,19 @@ public class Manager extends Angajat {
                     break;
 
                 case 4:
-                    modifySubordonat();
+                    modificaSalariuSubordonat();
                     break;
 
                 case 5:
+                    editareDatePersonaleMenu();
+                    break;
+
+                case 6:
                     logout = true;
+                    break;
+
+                default:
+                    System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
                     break;
             }
         }
@@ -157,12 +166,16 @@ public class Manager extends Angajat {
         while (true) {
             System.out.print("salariu: ");
             if (!scanner.hasNextInt()) {
-                System.out.println("salariul trebuie sa fie un numar intreg!");
+                System.out.println("salariul trebuie sa fie un numar natural strict pozitiv!");
                 scanner.next();
                 continue;
             }
             salariu = scanner.nextInt();
             scanner.nextLine();
+            if (salariu <= 0) {
+                System.out.println("salariul trebuie sa fie un numar natural strict pozitiv!");
+                continue;
+            }
             break;
         }
 
@@ -265,7 +278,7 @@ public class Manager extends Angajat {
         System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
     }
 
-    public void modifySubordonat() {
+    public void modificaSalariuSubordonat() {
         System.out.println("\nAlegeti subordonatul:");
 
         for (int i = 0; i < subordonati.size(); i++) {
@@ -295,40 +308,83 @@ public class Manager extends Angajat {
             return;
         }
 
-        boolean modificareEfectuata = false;
+        subordonat.editSalariu();
+        System.out.println("Salariul a fost modificat!");
+    }
 
-        while (!modificareEfectuata) {
-            System.out.println("\nAlegeti ce vreti sa modificati:");
-            System.out.println("1. Salariul");
-            System.out.println("2. Numar telefon");
+    @Override
+    public void editareDatePersonaleMenu() {
+        System.out.println("\nAlegeti o optiune:");
+        System.out.println("1. Editare username");
+        System.out.println("2. Editare password");
+        System.out.println("3. Editare nume");
+        System.out.println("4. Editare prenume");
+        System.out.println("5. Editare numar telefon");
+        System.out.println("6. Editare studii");
 
-            System.out.print("Optiune: ");
+        System.out.print("Optiune: ");
 
-            if (!scanner.hasNextInt()) {
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (option) {
+            case 1:
+                editUsername();
+                break;
+
+            case 2:
+                editPassword();
+                break;
+
+            case 3:
+                editNume();
+                break;
+
+            case 4:
+                editPrenume();
+                break;
+
+            case 5:
+                editNrTelefon();
+                break;
+
+            case 6:
+                editNivelEducatie();
+                break;
+
+            default:
                 System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
-                scanner.next();
+                break;
+        }
+    }
+
+    public void editNivelEducatie() {
+        String nivelEducatieNou = null;
+        while (true) {
+            System.out.print("nivel educatie: ");
+
+            nivelEducatieNou = scanner.nextLine();
+            if (nivelEducatieNou.isEmpty()) {
+                System.out.println("nivel educatie trebuie sa contina cel putin un caracter!");
                 continue;
             }
 
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            break;
+        }
 
-            if (option < 1 || 2 < option) {
-                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
-                continue;
-            }
-
-            switch (option) {
-                case 1:
-                    subordonat.editSalariu();
-                    modificareEfectuata = true;
-                    System.out.println("Salariul a fost modificat!");
-                    break;
-
-                case 2:
-                    // TODO
-                    break;
-            }
+        try {
+            Database.getInstance().editStringValue("angajat", "id_angajat", "nivel_educatie", nivelEducatieNou, this.getID());
+            this.nivelEducatie = nivelEducatieNou;
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editNivelEducatie()");
+            e.printStackTrace();
         }
     }
 }

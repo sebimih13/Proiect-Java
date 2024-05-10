@@ -24,5 +24,10 @@ public class Barman extends Angajat {
     public String toString() {
         return "Barman: " + super.toString();
     }
+
+    @Override
+    public void editareDatePersonaleMenu() {
+        // TODO
+    }
 }
 

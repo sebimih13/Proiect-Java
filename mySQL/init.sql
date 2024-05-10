@@ -94,22 +94,22 @@ CREATE TABLE preparat
 (
     id_produs INT(5) UNSIGNED,
 
-    litri DECIMAL(10, 2),
+    grame INT(5) UNSIGNED,
 
     PRIMARY KEY (id_produs),
     FOREIGN KEY (id_produs) REFERENCES produs(id_produs),
-    CHECK (litri > 0.0)
+    CHECK (grame > 0)
 );
 
 CREATE TABLE bautura
 (
     id_produs INT(5) UNSIGNED,
 
-    grame DECIMAL(10, 2),
+    litri INT(5) UNSIGNED,
 
     PRIMARY KEY (id_produs),
     FOREIGN KEY (id_produs) REFERENCES produs(id_produs),
-    CHECK (grame > 0.0)
+    CHECK (litri > 0)
 );
 
 CREATE TABLE client
@@ -135,6 +135,10 @@ CREATE TABLE comanda
     id_comanda INT(5) UNSIGNED,
     id_client INT(5) UNSIGNED,
     id_restaurant INT(5) UNSIGNED,
+
+    status VARCHAR(255),
+    data DATE,
+    ora TIME,
 
     PRIMARY KEY (id_comanda),
     FOREIGN KEY (id_client) REFERENCES client(id_client),
