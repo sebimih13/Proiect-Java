@@ -351,5 +351,9 @@ public class Barman extends Angajat {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<Bautura> getBauturi() {
+        return bauturi;
+    }
 }
 

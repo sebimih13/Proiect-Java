@@ -1,8 +1,9 @@
 package model;
 
 import App.Database;
-
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ospatar extends Angajat {
     String nivelEngleza;
@@ -22,11 +23,12 @@ public class Ospatar extends Angajat {
         while (!logout) {
             System.out.println("\nAlegeti o optiune:");
             System.out.println("1. Adauga comanda");
-            System.out.println("2. Schimba status comanda");
-            System.out.println("3. Editare date personale");
-            // TODO: Sterge comanda
-            // TODO: modificare comanda
-            System.out.println("4. Log out");
+            System.out.println("2. Sterge comanda");
+            System.out.println("3. Editare comanda");
+            System.out.println("4. Finalizare comanda");
+            System.out.println("5. Afisare date personale");
+            System.out.println("6. Editare date personale");
+            System.out.println("7. Log out");
 
             System.out.print("Optiune: ");
 
@@ -45,14 +47,26 @@ public class Ospatar extends Angajat {
                     break;
 
                 case 2:
-                    // TODO
+                    stergeComandaMenu();
                     break;
 
                 case 3:
-                    editareDatePersonaleMenu();
+                    editareComandaMenu();
                     break;
 
                 case 4:
+                    finalizareComanda();
+                    break;
+
+                case 5:
+                    afisareDatePersonaleMenu();
+                    break;
+
+                case 6:
+                    editareDatePersonaleMenu();
+                    break;
+
+                case 7:
                     logout = true;
                     break;
 
@@ -145,8 +159,94 @@ public class Ospatar extends Angajat {
         }
     }
 
+    @Override
+    public void afisareDatePersonaleMenu() {
+        super.afisareDatePersonaleMenu();
+        System.out.println("Nivel engleza: " + this.nivelEngleza);
+    }
+
     private void adaugareComandaMenu() {
+        Comanda comandaNoua = new Comanda(++Comanda.maxIDComanda);
+
+        List<Produs> produse = new ArrayList<>(getRestaurant().getProduse());
+
+        boolean comandaIncheiata = false;
+        while (!comandaIncheiata) {
+            System.out.println("\nAlege produsul:");
+            for (int i = 0; i < produse.size(); i++) {
+                System.out.printf((i + 1) + ". " + produse.get(i) + "\n");
+            }
+            System.out.println((produse.size() + 1) + ". Incheie comanda");
+
+            System.out.print("Optiune: ");
+
+            if (!scanner.hasNextInt()) {
+                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+                scanner.next();
+                continue;
+            }
+
+            int option = scanner.nextInt();
+            scanner.nextLine();
+
+            if (option < 1 || produse.size() + 1 < option) {
+                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+                continue;
+            }
+
+            if (option == produse.size() + 1) {
+                comandaIncheiata = true;
+                continue;
+            }
+
+            Integer cantitate = null;
+            while (true) {
+                System.out.print("Cantitate: ");
+
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Optiune invalida! Alegeti un numar din natural strict pozitiv!");
+                    scanner.next();
+                    continue;
+                }
+
+                cantitate = scanner.nextInt();
+                scanner.nextLine();
+
+                if (cantitate <= 0) {
+                    System.out.println("Optiune invalida! Alegeti un numar din natural strict pozitiv!");
+                    continue;
+                }
+
+                break;
+            }
+
+            comandaNoua.adaugaProdus(produse.get(option - 1), cantitate);
+        }
+
+        try {
+            getRestaurant().addComanda(comandaNoua);
+            Database.getInstance().addComanda(comandaNoua, null, getRestaurant());
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> adaugareComandaMenu()");
+            e.printStackTrace();
+        }
+    }
+
+    private void stergeComandaMenu() {
         // TODO
+        // Database.getInstance().deleteComanda(option);
+    }
+
+    private void editareComandaMenu() {
+        // TODO
+        // schimba/adauga produse noi la comanda
+        // schimba cantitatea
+    }
+
+    private void finalizareComanda() {
+        // TODO
+        // Schimba statusul unei comenzi
     }
 }
 

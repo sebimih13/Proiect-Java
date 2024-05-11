@@ -351,5 +351,9 @@ public class SefBucatar extends Angajat {
         super.afisareDatePersonaleMenu();
         System.out.println("Specializare: " + this.specializare);
     }
+
+    public ArrayList<Preparat> getPreparate() {
+        return preparate;
+    }
 }
 

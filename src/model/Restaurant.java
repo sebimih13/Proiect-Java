@@ -1,6 +1,13 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class Restaurant {
+    private static Integer maxIDRestaurant;
+
     private Integer ID;
 
     private String nume;
@@ -9,10 +16,11 @@ public class Restaurant {
     private String strada;
     private String nrTelefon;
 
-    private static Integer maxIDRestaurant;
+    private ArrayList<Angajat> angajati;
+    private ArrayList<Comanda> comenzi;
 
     static {
-        maxIDRestaurant = Integer.MIN_VALUE;
+        maxIDRestaurant = 0;
     }
 
     public Restaurant(Integer ID, String nume, Integer nrStele, String oras, String strada, String nrTelefon) {
@@ -22,6 +30,8 @@ public class Restaurant {
         this.oras = oras;
         this.strada = strada;
         this.nrTelefon = nrTelefon;
+        this.comenzi = new ArrayList<>();
+        this.angajati = new ArrayList<>();
 
         maxIDRestaurant = Integer.max(maxIDRestaurant, ID);
     }
@@ -48,6 +58,33 @@ public class Restaurant {
 
     public String getNrTelefon() {
         return nrTelefon;
+    }
+
+    public void addComanda(Comanda comanda) {
+        comenzi.add(comanda);
+    }
+
+    public void addAngajat(Angajat angajat) {
+        angajati.add(angajat);
+    }
+
+    public Set<Produs> getProduse() {
+        Set<Produs> produse = new HashSet<>();
+
+        for (int i = 0; i < angajati.size(); i++) {
+            if (angajati.get(i) instanceof SefBucatar) {
+                for (Preparat produs : ((SefBucatar) angajati.get(i)).getPreparate()) {
+                    produse.add(produs); // TODO: adauga o copie / clona
+                }
+            }
+            else if (angajati.get(i) instanceof Barman) {
+                for (Bautura produs : ((Barman) angajati.get(i)).getBauturi()) {
+                    produse.add(produs); // TODO: adauga o copie / clona
+                }
+            }
+        }
+
+        return produse;
     }
 }
 

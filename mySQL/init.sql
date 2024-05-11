@@ -262,3 +262,7 @@ VALUES (4, 4);
 INSERT INTO restaurant (id_restaurant, nume, nr_stele, oras, strada, nr_telefon)
 VALUES (20, 'Zen Garden Sushi', 5, 'Bucuresti', 'Strada Japonia nr. 12', '0775570200');
 
+-- merge si cu NULL
+INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)
+VALUES (1, NULL, 10, "InPregatire", '2024-05-11', '14:30:00')
+

@@ -108,37 +108,41 @@ public class Database {
             rs = connection.prepareStatement(SQLManager).executeQuery();
             while (rs.next()) {
                 angajati.put(rs.getInt(1), new Manager(rs.getInt(1), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), null, restaurante.get(rs.getInt(3)), rs.getString(10)));
+                restaurante.get(rs.getInt(3)).addAngajat(angajati.get(rs.getInt(1)));
             }
 
             rs = connection.prepareStatement(SQLSefBucatar).executeQuery();
             while (rs.next()) {
                 angajati.put(rs.getInt(1), new SefBucatar(rs.getInt(1), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
                 ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
+                restaurante.get(rs.getInt(3)).addAngajat(angajati.get(rs.getInt(1)));
             }
 
             rs = connection.prepareStatement(SQLBarman).executeQuery();
             while (rs.next()) {
                 angajati.put(rs.getInt(1), new Barman(rs.getInt(1), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
                 ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
+                restaurante.get(rs.getInt(3)).addAngajat(angajati.get(rs.getInt(1)));
             }
 
             rs = connection.prepareStatement(SQLOspatar).executeQuery();
             while (rs.next()) {
                 angajati.put(rs.getInt(1), new Ospatar(rs.getInt(1), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
                 ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
+                restaurante.get(rs.getInt(3)).addAngajat(angajati.get(rs.getInt(1)));
             }
 
             // produse
             rs = connection.prepareStatement(SQLPreparat).executeQuery();
             while (rs.next()) {
                 produse.put(rs.getInt(1), new Preparat(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5)));
-                ((SefBucatar) angajati.get(rs.getInt(6))).addPreparat((Preparat) produse.get(rs.getInt(1))); // TODO: adauga o copie
+                ((SefBucatar) angajati.get(rs.getInt(6))).addPreparat((Preparat) produse.get(rs.getInt(1))); // TODO: adauga o copie / clona
             }
 
             rs = connection.prepareStatement(SQLBautura).executeQuery();
             while (rs.next()) {
                 produse.put(rs.getInt(1), new Bautura(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5)));
-                ((Barman) angajati.get(rs.getInt(6))).addBautura((Bautura) produse.get(rs.getInt(1))); // TODO: adauga o copie
+                ((Barman) angajati.get(rs.getInt(6))).addBautura((Bautura) produse.get(rs.getInt(1))); // TODO: adauga o copie / clona
             }
 
             // clienti
@@ -248,6 +252,8 @@ public class Database {
         preparedStatement = connection.prepareStatement(SQLDeleteAngajat);
         preparedStatement.setInt(1, ID);
         preparedStatement.executeUpdate();
+
+        // TODO: DELETE FROM prepara + gateste
     }
 
     public void addProdus(Produs produs, Angajat angajat) throws SQLException {
@@ -325,6 +331,54 @@ public class Database {
         preparedStatement.executeUpdate();
 
         preparedStatement = connection.prepareStatement(SQLDeleteProdus);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+
+        // TODO: DELETE FROM prepara + gateste
+    }
+
+    public void addComanda(Comanda comanda, Client client, Restaurant restaurant) throws SQLException {
+        // comenzi.put(comanda.getID(), comanda);
+
+        String SQLInsertComanda = "INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)" + "\n"
+                                + "VALUES (?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLInsertComanda);
+        preparedStatement.setInt(1, comanda.getID());
+        if (client != null) {
+            preparedStatement.setInt(2, client.getID());
+        } else {
+            preparedStatement.setNull(2, java.sql.Types.INTEGER);
+        }
+        preparedStatement.setInt(3, restaurant.getID());
+        preparedStatement.setString(4, comanda.getStatus());
+        preparedStatement.setDate(5, comanda.getData());
+        preparedStatement.setTime(6, comanda.getOra());
+
+        preparedStatement.executeUpdate();
+
+        String SQLInsertContine = "INSERT INTO contine (id_produs, id_comanda, cantitate)" + "\n"
+                                + "VALUES (?, ?, ?);";
+
+        for (Produs produs : comanda.getProduse()) {
+            preparedStatement = connection.prepareStatement(SQLInsertContine);
+            preparedStatement.setInt(1, produs.getID());
+            preparedStatement.setInt(2, comanda.getID());
+            preparedStatement.setInt(3, comanda.getCantitati().get(produs));
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public void deleteComanda(int ID) throws SQLException {
+        // TODO: use
+        String SQLDeleteContine = "DELETE FROM contine" + "\n"
+                                + "WHERE id_produs = ? AND id_comanda = ?;";
+
+        String SQLDeleteComanda = "DELETE FROM comanda" + "\n"
+                                + "WHERE id_comanda = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLDeleteComanda);
         preparedStatement.setInt(1, ID);
         preparedStatement.executeUpdate();
     }
