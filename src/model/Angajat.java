@@ -39,7 +39,7 @@ public abstract class Angajat {
         this.restaurant = restaurant;
 
         maxIDAngajat = Integer.max(maxIDAngajat, ID);
-        scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in);
     }
 
     public Integer getID() {

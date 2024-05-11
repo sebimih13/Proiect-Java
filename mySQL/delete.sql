@@ -98,3 +98,7 @@ SELECT c.id_comanda, p.id_produs, con.cantitate
 FROM comanda c JOIN contine con ON (c.id_comanda = con.id_comanda)
                JOIN produs p ON (con.id_produs = p.id_produs);
 
+UPDATE contine
+SET cantitate = 2
+WHERE id_produs = 1 AND id_comanda = 1;
+

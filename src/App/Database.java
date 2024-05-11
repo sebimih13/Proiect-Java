@@ -3,6 +3,7 @@ package App;
 import java.sql.*;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Objects;
 
 import model.*;
 
@@ -160,7 +161,8 @@ public class Database {
             // comenzi
             rs = connection.prepareStatement(SQLComanda).executeQuery();
             while (rs.next()) {
-                comenzi.put(rs.getInt(1), new Comanda(rs.getInt(1)));
+
+                comenzi.put(rs.getInt(1), new Comanda(rs.getInt(1), (Objects.equals(rs.getString(4), "InPregatire")) ? Comanda.Status.InPregatire : Comanda.Status.Livrata, rs.getDate(5), rs.getTime(6)));
                 restaurante.get(rs.getInt(3)).addComanda(comenzi.get(rs.getInt(1)));
             }
 
@@ -424,6 +426,18 @@ public class Database {
         PreparedStatement preparedStatement = connection.prepareStatement(SQLEdit);
         preparedStatement.setString(1, value);
         preparedStatement.setInt(2, ID);
+        preparedStatement.executeUpdate();
+    }
+
+    public void editContine(Integer cantitate, Integer IDProdus, Integer IDComanda) throws  SQLException {
+        String SQLEdit = "UPDATE contine" + "\n"
+                       + "SET cantitate = ?" + "\n"
+                       + "WHERE id_produs = ? AND id_comanda = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLEdit);
+        preparedStatement.setInt(1, cantitate);
+        preparedStatement.setInt(2, IDProdus);
+        preparedStatement.setInt(3, IDComanda);
         preparedStatement.executeUpdate();
     }
 }

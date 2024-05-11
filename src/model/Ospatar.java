@@ -239,7 +239,7 @@ public class Ospatar extends Angajat {
         Integer index = 0;
         for (Comanda comanda : getRestaurant().getComenzi()) {
             if (comanda.getStatus() == Comanda.Status.InPregatire) {
-                System.out.println(++index + "." + comanda);
+                System.out.println(++index + ". " + comanda);
                 comenzi.add(comanda);
             }
         }
@@ -276,14 +276,105 @@ public class Ospatar extends Angajat {
     }
 
     private void editareComandaMenu() {
-        // TODO
-        // schimba/adauga produse noi la comanda
-        // schimba cantitatea
+        List<Comanda> comenzi = new ArrayList<>();
+
+        Integer index = 0;
+        for (Comanda comanda : getRestaurant().getComenzi()) {
+            if (comanda.getStatus() == Comanda.Status.InPregatire) {
+                System.out.println(++index + ". " + comanda);
+                comenzi.add(comanda);
+            }
+        }
+
+        if (comenzi.size() == 0) {
+            System.out.println("Nu exista comenzi in pregatire!");
+            return;
+        }
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        if (option < 1 || comenzi.size() + 1 < option) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            return;
+        }
+
+        System.out.println("Alegeti o actiune:");
+        System.out.println("1. Schimba cantitatea");
+        System.out.println("2. Adauga produse noi la comanda");
+        System.out.print("Optiune: ");
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int actiune = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (actiune) {
+            case 1:
+                comenzi.get(option - 1).schimbaCantitateaMenu();
+                break;
+
+            case 2:
+                comenzi.get(option - 1).addProdusMenu();
+                break;
+
+            default:
+                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+                break;
+        }
     }
 
     private void finalizareComanda() {
-        // TODO
-        // Schimba statusul unei comenzi
+        List<Comanda> comenzi = new ArrayList<>();
+
+        Integer index = 0;
+        for (Comanda comanda : getRestaurant().getComenzi()) {
+            if (comanda.getStatus() == Comanda.Status.InPregatire) {
+                System.out.println(++index + ". " + comanda);
+                comenzi.add(comanda);
+            }
+        }
+
+        if (comenzi.size() == 0) {
+            System.out.println("Nu exista comenzi in pregatire!");
+            return;
+        }
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        if (option < 1 || comenzi.size() + 1 < option) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            return;
+        }
+
+        try {
+            Database.getInstance().editStringValue("comanda", "id_comanda", "status", Comanda.Status.Livrata.toString(), comenzi.get(option - 1).getID());
+            comenzi.get(option - 1).finalizareComanda();
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> finalizareComanda()");
+            e.printStackTrace();
+        }
     }
 }
 
