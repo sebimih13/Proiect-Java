@@ -28,7 +28,7 @@ public class Preparat extends Produs {
             System.out.print("grame: ");
 
             if (!scanner.hasNextInt()) {
-                System.out.println("cantitatea in grame trebuie sa fie un numar strict pozitiv!");
+                System.out.println("cantitatea trebuie sa fie un numar strict pozitiv!");
                 scanner.next();
                 continue;
             }
@@ -37,7 +37,7 @@ public class Preparat extends Produs {
             scanner.nextLine();
 
             if (grameNou <= 0) {
-                System.out.println("cantitatea in grame trebuie sa fie un numar strict pozitiv!");
+                System.out.println("cantitatea trebuie sa fie un numar strict pozitiv!");
                 continue;
             }
 
@@ -47,7 +47,7 @@ public class Preparat extends Produs {
         try {
             Database.getInstance().editIntValue("preparat", "id_produs", "grame", grameNou, this.getID());
             this.grame = grameNou;
-            System.out.println("cantitatea in grame a fost modificata cu succes!");
+            System.out.println("cantitatea a fost modificata cu succes!");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editGrame()");

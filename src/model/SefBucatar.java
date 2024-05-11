@@ -28,8 +28,9 @@ public class SefBucatar extends Angajat {
             System.out.println("2. Adauga un nou preparat");
             System.out.println("3. Sterge un preparat");
             System.out.println("4. Editare preparat");
-            System.out.println("5. Editare date personale");
-            System.out.println("6. Log out");
+            System.out.println("5. Afisare date personale");
+            System.out.println("6. Editare date personale");
+            System.out.println("7. Log out");
 
             System.out.print("Optiune: ");
 
@@ -60,10 +61,14 @@ public class SefBucatar extends Angajat {
                     break;
 
                 case 5:
-                    editareDatePersonaleMenu();
+                    afisareDatePersonaleMenu();
                     break;
 
                 case 6:
+                    editareDatePersonaleMenu();
+                    break;
+
+                case 7:
                     logout = true;
                     break;
 
@@ -136,7 +141,7 @@ public class SefBucatar extends Angajat {
         }
     }
 
-    private void editSpecializare() {
+    public void editSpecializare() {
         String specializareNou = null;
         while (true) {
             System.out.print("specializare: ");
@@ -151,7 +156,7 @@ public class SefBucatar extends Angajat {
         }
 
         try {
-            Database.getInstance().editStringValue("angajat", "id_angajat", "specializare", specializareNou, this.getID());
+            Database.getInstance().editStringValue("sef_bucatar", "id_angajat", "specializare", specializareNou, this.getID());
             this.specializare = specializareNou;
         }
         catch (SQLException e) {
@@ -339,6 +344,12 @@ public class SefBucatar extends Angajat {
                 System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
                 break;
         }
+    }
+
+    @Override
+    public void afisareDatePersonaleMenu() {
+        super.afisareDatePersonaleMenu();
+        System.out.println("Specializare: " + this.specializare);
     }
 }
 

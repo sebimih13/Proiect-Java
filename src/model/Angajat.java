@@ -239,5 +239,16 @@ public abstract class Angajat {
             e.printStackTrace();
         }
     }
+
+    public void afisareDatePersonaleMenu() {
+        System.out.println();
+        System.out.println("username: " + this.username);
+        System.out.println("nume: " + this.nume);
+        System.out.println("prenume: " + this.prenume);
+        System.out.println("salariu: " + this.salariu);
+        System.out.println("numar telefon: " + this.nrTelefon);
+        System.out.println("restaurant: " + this.restaurant.getNume());
+        System.out.println("manager: " + this.manager.getNume() + " " + this.manager.getPrenume());
+    }
 }
 

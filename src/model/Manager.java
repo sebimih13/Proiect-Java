@@ -29,8 +29,9 @@ public class Manager extends Angajat {
             System.out.println("2. Adaugare angajat nou in restaurant");
             System.out.println("3. Sterge angajat din restaurant");
             System.out.println("4. Modifica salariul unui angajat");
-            System.out.println("5. Editare date personale");
-            System.out.println("6. Log out");
+            System.out.println("5. Afisare date personale");
+            System.out.println("6. Editare date personale");
+            System.out.println("7. Log out");
 
             System.out.print("Optiune: ");
 
@@ -72,10 +73,14 @@ public class Manager extends Angajat {
                     break;
 
                 case 5:
-                    editareDatePersonaleMenu();
+                    afisareDatePersonaleMenu();
                     break;
 
                 case 6:
+                    editareDatePersonaleMenu();
+                    break;
+
+                case 7:
                     logout = true;
                     break;
 
@@ -386,6 +391,12 @@ public class Manager extends Angajat {
             System.out.println("FAILED -> editNivelEducatie()");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void afisareDatePersonaleMenu() {
+        super.afisareDatePersonaleMenu();
+        System.out.println("Studii: " + this.nivelEducatie);
     }
 }
 
