@@ -234,8 +234,45 @@ public class Ospatar extends Angajat {
     }
 
     private void stergeComandaMenu() {
-        // TODO
-        // Database.getInstance().deleteComanda(option);
+        List<Comanda> comenzi = new ArrayList<>();
+
+        Integer index = 0;
+        for (Comanda comanda : getRestaurant().getComenzi()) {
+            if (comanda.getStatus() == Comanda.Status.InPregatire) {
+                System.out.println(++index + "." + comanda);
+                comenzi.add(comanda);
+            }
+        }
+
+        if (comenzi.size() == 0) {
+            System.out.println("Nu exista comenzi in pregatire!");
+            return;
+        }
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        if (option < 1 || comenzi.size() + 1 < option) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            return;
+        }
+
+        try {
+            Database.getInstance().deleteComanda(comenzi.get(option - 1).getID());
+            getRestaurant().deleteComanda(comenzi.get(option - 1));
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> stergeComandaMenu()");
+            e.printStackTrace();
+        }
     }
 
     private void editareComandaMenu() {

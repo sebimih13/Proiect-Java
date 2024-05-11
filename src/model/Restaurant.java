@@ -60,8 +60,20 @@ public class Restaurant {
         return nrTelefon;
     }
 
+    public ArrayList<Angajat> getAngajati() {
+        return angajati;
+    }
+
+    public ArrayList<Comanda> getComenzi() {
+        return comenzi;
+    }
+
     public void addComanda(Comanda comanda) {
         comenzi.add(comanda);
+    }
+
+    public void deleteComanda(Comanda comanda) {
+        comenzi.remove(comanda);
     }
 
     public void addAngajat(Angajat angajat) {

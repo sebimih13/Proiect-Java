@@ -42,11 +42,8 @@ public class Comanda {
         return ID;
     }
 
-    public String getStatus() {
-        return switch (status) {
-            case InPregatire -> "InPregatire";
-            case Livrata -> "Livrata";
-        };
+    public Status getStatus() {
+        return status;
     }
 
     public Date getData() {
@@ -72,6 +69,12 @@ public class Comanda {
 
     public void editComanda() {
         // TODO
+    }
+
+    @Override
+    public String toString() {
+        // TODO: client poate sa fie si null
+        return "plasata: " + data + " " + ora;
     }
 }
 

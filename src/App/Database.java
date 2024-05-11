@@ -18,6 +18,7 @@ public class Database {
     private Map<Integer, Restaurant> restaurante;
     private Map<Integer, Angajat> angajati;
     private Map<Integer, Produs> produse;
+    private Map<Integer, Comanda> comenzi;
 
     // TODO: bloc normal? / bloc static? / constructor?
     static {
@@ -29,6 +30,7 @@ public class Database {
         restaurante = new HashMap<>();
         angajati = new HashMap<>();
         produse = new HashMap<>();
+        comenzi = new HashMap<>();
 
         loadDatabase();
     }
@@ -88,13 +90,20 @@ public class Database {
 
         String SQLPreparat = "SELECT p.id_produs, p.nume, p.descriere, p.pret, pr.grame, sb.id_angajat" + "\n"
                            + "FROM produs p JOIN preparat pr ON (p.id_produs = pr.id_produs)" + "\n"
-                           + "JOIN gateste g ON (p.id_produs = g.id_produs)" + "\n"
-                           + "JOIN sef_bucatar sb ON (g.id_angajat = sb.id_angajat);";
+                           + "              JOIN gateste g ON (p.id_produs = g.id_produs)" + "\n"
+                           + "              JOIN sef_bucatar sb ON (g.id_angajat = sb.id_angajat);";
 
         String SQLBautura = "SELECT p.id_produs, p.nume, p.descriere, p.pret, b.ml, bar.id_angajat" + "\n"
                           + "FROM produs p JOIN bautura b ON (p.id_produs = b.id_produs)" + "\n"
-                          + "JOIN prepara pre ON (p.id_produs = pre.id_produs)" + "\n"
-                          + "JOIN barman bar ON (pre.id_angajat = bar.id_angajat);";
+                          + "              JOIN prepara pre ON (p.id_produs = pre.id_produs)" + "\n"
+                          + "              JOIN barman bar ON (pre.id_angajat = bar.id_angajat);";
+
+        String SQLComanda = "SELECT c.id_comanda, c.id_client, r.id_restaurant, c.status, c.data, c.ora" + "\n"
+                          + "FROM comanda c JOIN restaurant r ON (c.id_restaurant = r.id_restaurant);";
+
+        String SQLComandaContine = "SELECT c.id_comanda, p.id_produs, con.cantitate" + "\n"
+                                 + "FROM comanda c JOIN contine con ON (c.id_comanda = con.id_comanda)" + "\n"
+                                 + "               JOIN produs p ON (con.id_produs = p.id_produs);";
 
         // execute SQL
         try {
@@ -147,6 +156,19 @@ public class Database {
 
             // clienti
             // TODO
+
+            // comenzi
+            rs = connection.prepareStatement(SQLComanda).executeQuery();
+            while (rs.next()) {
+                comenzi.put(rs.getInt(1), new Comanda(rs.getInt(1)));
+                restaurante.get(rs.getInt(3)).addComanda(comenzi.get(rs.getInt(1)));
+            }
+
+            // continut comanda
+            rs = connection.prepareStatement(SQLComandaContine).executeQuery();
+            while (rs.next()) {
+                comenzi.get(rs.getInt(1)).adaugaProdus(produse.get(rs.getInt(2)), rs.getInt(3));
+            }
         }
         catch (SQLException e) {
             System.out.println("exceptie SQLException");
@@ -351,7 +373,7 @@ public class Database {
             preparedStatement.setNull(2, java.sql.Types.INTEGER);
         }
         preparedStatement.setInt(3, restaurant.getID());
-        preparedStatement.setString(4, comanda.getStatus());
+        preparedStatement.setString(4, comanda.getStatus().toString());
         preparedStatement.setDate(5, comanda.getData());
         preparedStatement.setTime(6, comanda.getOra());
 

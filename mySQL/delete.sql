@@ -91,3 +91,10 @@ FROM produs p JOIN bautura b ON (p.id_produs = b.id_produs)
               JOIN prepara pre ON (p.id_produs = pre.id_produs)
               JOIN barman bar ON (pre.id_angajat = bar.id_angajat);
 
+SELECT c.id_comanda, c.id_client, r.id_restaurant, c.status, c.data, c.ora
+FROM comanda c JOIN restaurant r ON (c.id_restaurant = r.id_restaurant);
+
+SELECT c.id_comanda, p.id_produs, con.cantitate
+FROM comanda c JOIN contine con ON (c.id_comanda = con.id_comanda)
+               JOIN produs p ON (con.id_produs = p.id_produs);
+
