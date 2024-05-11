@@ -272,7 +272,73 @@ public class SefBucatar extends Angajat {
     }
 
     private void editarePreparat() {
-        // TODO
+        System.out.println("\nAlegeti preparatul:");
+
+        for (int i = 0; i < preparate.size(); i++) {
+            System.out.println(preparate.get(i).getID() + " -> " + preparate.get(i).getNume());
+        }
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int optionPreparat = scanner.nextInt();
+        scanner.nextLine();
+
+        Preparat preparat = null;
+        for (int i = 0; i < preparate.size(); i++) {
+            if (preparate.get(i).getID() == optionPreparat) {
+                preparat = preparate.get(i);
+            }
+        }
+
+        if (preparat == null) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            return;
+        }
+
+        System.out.println("\nAlegeti ce vreti sa editati:");
+        System.out.println("1. Nume");
+        System.out.println("2. Descriere");
+        System.out.println("3. Pret");
+        System.out.println("4. Grame");
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (option) {
+            case 1:
+                preparat.editNume();
+                break;
+
+            case 2:
+                preparat.editDescriere();
+                break;
+
+            case 3:
+                preparat.editPret();
+                break;
+
+            case 4:
+                preparat.editGrame();
+                break;
+
+            default:
+                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+                break;
+        }
     }
 }
 
