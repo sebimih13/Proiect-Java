@@ -14,8 +14,8 @@ public class Preparat extends Produs {
 
     @Override
     public String toString() {
-        // TODO
-        return super.toString();
+        return super.toString() + "\n"
+             + "Grame: " + grame;
     }
 }
 

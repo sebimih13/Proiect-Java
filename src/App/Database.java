@@ -28,6 +28,7 @@ public class Database {
     private Database() {
         restaurante = new HashMap<>();
         angajati = new HashMap<>();
+        produse = new HashMap<>();
 
         loadDatabase();
     }
@@ -85,6 +86,16 @@ public class Database {
         String SQLOspatar = "SELECT a.id_angajat, a.id_manager, a.id_restaurant, a.username, a.password, a.nume, a.prenume, a.salariu, a.nr_telefon, o.nivel_engleza" + "\n" +
                             "FROM angajat a JOIN ospatar o ON (a.id_angajat = o.id_angajat);";
 
+        String SQLPreparat = "SELECT p.id_produs, p.nume, p.descriere, p.pret, pr.grame, sb.id_angajat" + "\n"
+                           + "FROM produs p JOIN preparat pr ON (p.id_produs = pr.id_produs)" + "\n"
+                           + "JOIN gateste g ON (p.id_produs = g.id_produs)" + "\n"
+                           + "JOIN sef_bucatar sb ON (g.id_angajat = sb.id_angajat);";
+
+        String SQLBautura = "SELECT p.id_produs, p.nume, p.descriere, p.pret, b.ml, bar.id_angajat" + "\n"
+                          + "FROM produs p JOIN bautura b ON (p.id_produs = b.id_produs)" + "\n"
+                          + "JOIN prepara pre ON (p.id_produs = pre.id_produs)" + "\n"
+                          + "JOIN barman bar ON (pre.id_angajat = bar.id_angajat);";
+
         // execute SQL
         try {
             // restaurante
@@ -115,6 +126,19 @@ public class Database {
             while (rs.next()) {
                 angajati.put(rs.getInt(1), new Ospatar(rs.getInt(1), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getString(9), angajati.get(rs.getInt(2)), restaurante.get(rs.getInt(3)), rs.getString(10)));
                 ((Manager) angajati.get(rs.getInt(2))).addSubordonat(angajati.get(rs.getInt(1)));
+            }
+
+            // produse
+            rs = connection.prepareStatement(SQLPreparat).executeQuery();
+            while (rs.next()) {
+                produse.put(rs.getInt(1), new Preparat(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5)));
+                ((SefBucatar) angajati.get(rs.getInt(6))).addPreparat((Preparat) produse.get(rs.getInt(1))); // TODO: adauga o copie
+            }
+
+            rs = connection.prepareStatement(SQLBautura).executeQuery();
+            while (rs.next()) {
+                produse.put(rs.getInt(1), new Bautura(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5)));
+                ((Barman) angajati.get(rs.getInt(6))).addBautura((Bautura) produse.get(rs.getInt(1))); // TODO: adauga o copie
             }
 
             // clienti
@@ -226,7 +250,7 @@ public class Database {
         preparedStatement.executeUpdate();
     }
 
-    public void addProdus(Produs produs) throws SQLException {
+    public void addProdus(Produs produs, Angajat angajat) throws SQLException {
         produse.put(produs.getID(), produs);
 
         String SQLInsertProdus = "INSERT INTO produs (id_produs, nume, descriere, pret)" + "\n"
@@ -249,14 +273,32 @@ public class Database {
             preparedStatement.setInt(2, ((Preparat) produs).getGrame());
 
             preparedStatement.executeUpdate();
+
+            String SQLInsertGateste = "INSERT INTO gateste (id_angajat, id_produs)" + "\n"
+                                    + "VALUES (?, ?);";
+
+            preparedStatement = connection.prepareStatement(SQLInsertGateste);
+            preparedStatement.setInt(1, angajat.getID());
+            preparedStatement.setInt(2, produs.getID());
+
+            preparedStatement.executeUpdate();
         }
         else if (produs instanceof Bautura) {
-            String SQLInsertBautura = "INSERT INTO bautura (id_produs, litri)" + "\n"
+            String SQLInsertBautura = "INSERT INTO bautura (id_produs, ml)" + "\n"
                                     + "VALUES (?, ?);";
 
             preparedStatement = connection.prepareStatement(SQLInsertBautura);
             preparedStatement.setInt(1, produs.getID());
-            preparedStatement.setInt(2, ((Bautura) produs).getLitri());
+            preparedStatement.setInt(2, ((Bautura) produs).getMl());
+
+            preparedStatement.executeUpdate();
+
+            String SQLInsertPrepara = "INSERT INTO prepara (id_angajat, id_produs)" + "\n"
+                                    + "VALUES (?, ?);";
+
+            preparedStatement = connection.prepareStatement(SQLInsertPrepara);
+            preparedStatement.setInt(1, angajat.getID());
+            preparedStatement.setInt(2, produs.getID());
 
             preparedStatement.executeUpdate();
         }
@@ -274,15 +316,15 @@ public class Database {
         String SQLDeleteBautura = "DELETE FROM bautura" + "\n"
                                 + "WHERE id_produs = ?;";
 
-        PreparedStatement preparedStatement = connection.prepareStatement(SQLDeleteProdus);
-        preparedStatement.setInt(1, ID);
-        preparedStatement.executeUpdate();
-
-        preparedStatement = connection.prepareStatement(SQLDeletePreparat);
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLDeletePreparat);
         preparedStatement.setInt(1, ID);
         preparedStatement.executeUpdate();
 
         preparedStatement = connection.prepareStatement(SQLDeleteBautura);
+        preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+
+        preparedStatement = connection.prepareStatement(SQLDeleteProdus);
         preparedStatement.setInt(1, ID);
         preparedStatement.executeUpdate();
     }

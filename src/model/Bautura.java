@@ -1,21 +1,21 @@
 package model;
 
 public class Bautura extends Produs {
-    private Integer litri;
+    private Integer ml;
 
-    public Bautura(Integer ID, String nume, String descriere, Integer pret, Integer litri) {
+    public Bautura(Integer ID, String nume, String descriere, Integer pret, Integer ml) {
         super(ID, nume, descriere, pret);
-        this.litri = litri;
+        this.ml = ml;
     }
 
-    public Integer getLitri() {
-        return litri;
+    public Integer getMl() {
+        return ml;
     }
 
     @Override
     public String toString() {
-        // TODO
-        return super.toString();
+        return super.toString() + "\n"
+             + "Ml: " + ml;
     }
 }
 

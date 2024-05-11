@@ -81,3 +81,13 @@ UPDATE angajat
 SET salariu = 4000
 WHERE id_angajat = 2;
 
+SELECT p.id_produs, p.nume, p.descriere, p.pret, pr.grame, sb.id_angajat
+FROM produs p JOIN preparat pr ON (p.id_produs = pr.id_produs)
+              JOIN gateste g ON (p.id_produs = g.id_produs)
+              JOIN sef_bucatar sb ON (g.id_angajat = sb.id_angajat);
+
+SELECT p.id_produs, p.nume, p.descriere, p.pret, b.ml, bar.id_angajat
+FROM produs p JOIN bautura b ON (p.id_produs = b.id_produs)
+              JOIN prepara pre ON (p.id_produs = pre.id_produs)
+              JOIN barman bar ON (pre.id_angajat = bar.id_angajat);
+

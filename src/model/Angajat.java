@@ -24,7 +24,7 @@ public abstract class Angajat {
     protected final Scanner scanner;
 
     static {
-        maxIDAngajat = 1;
+        maxIDAngajat = 0;
     }
 
     public Angajat(Integer ID, String username, String password, String nume, String prenume, int salariu, String nrTelefon, Angajat manager, Restaurant restaurant) {

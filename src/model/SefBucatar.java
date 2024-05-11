@@ -163,7 +163,7 @@ public class SefBucatar extends Angajat {
     private void afisarePreparateMenu() {
         System.out.println("\nPreparate:");
         for (int i = 0; i < preparate.size(); i++) {
-            System.out.println(preparate.get(i));
+            System.out.println(preparate.get(i) + "\n");
         }
     }
 
@@ -226,7 +226,7 @@ public class SefBucatar extends Angajat {
 
         try {
             Preparat preparatNou = new Preparat(++Preparat.maxIDProdus, nume, descriere, pret, grame);
-            Database.getInstance().addProdus(preparatNou);
+            Database.getInstance().addProdus(preparatNou, this);
             addPreparat(preparatNou);
         }
         catch (SQLException e) {
@@ -236,8 +236,39 @@ public class SefBucatar extends Angajat {
     }
 
     private void stergePreparatMenu() {
-        // TODO
-        // Database.deleteProdus()
+        System.out.println("\nAlegeti produsul:");
+
+        for (int i = 0; i < preparate.size(); i++) {
+            System.out.println(preparate.get(i).getID() + " -> " + preparate.get(i));
+        }
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < preparate.size(); i++) {
+            if (preparate.get(i).getID() == option) {
+                try {
+                    Database.getInstance().deleteProdus(option);
+                    preparate.remove(i);
+                    System.out.println("Preparatul a fost sters din baza de date");
+                    return;
+                }
+                catch (SQLException e) {
+                    System.out.println("FAILED -> stergePreparatMenu()");
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
     }
 
     private void editarePreparat() {

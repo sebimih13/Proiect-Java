@@ -105,11 +105,11 @@ CREATE TABLE bautura
 (
     id_produs INT(5) UNSIGNED,
 
-    litri INT(5) UNSIGNED,
+    ml INT(5) UNSIGNED,
 
     PRIMARY KEY (id_produs),
     FOREIGN KEY (id_produs) REFERENCES produs(id_produs),
-    CHECK (litri > 0)
+    CHECK (ml > 0)
 );
 
 CREATE TABLE client
@@ -163,12 +163,9 @@ CREATE TABLE GATESTE
     id_angajat INT(5) UNSIGNED,
     id_produs INT(5) UNSIGNED,
 
-    durata_minute INT(10) UNSIGNED,
-
     PRIMARY KEY (id_angajat, id_produs),
     FOREIGN KEY (id_angajat) REFERENCES angajat(id_angajat) ON DELETE CASCADE,
-    FOREIGN KEY (id_produs) REFERENCES produs(id_produs) ON DELETE CASCADE,
-    CHECK (durata_minute > 0)
+    FOREIGN KEY (id_produs) REFERENCES produs(id_produs) ON DELETE CASCADE
 );
 
 CREATE TABLE PREPARA
@@ -176,12 +173,9 @@ CREATE TABLE PREPARA
     id_angajat INT(5) UNSIGNED,
     id_produs INT(5) UNSIGNED,
 
-    durata_minute INT(10) UNSIGNED,
-
     PRIMARY KEY (id_angajat, id_produs),
     FOREIGN KEY (id_angajat) REFERENCES angajat(id_angajat) ON DELETE CASCADE,
-    FOREIGN KEY (id_produs) REFERENCES produs(id_produs) ON DELETE CASCADE,
-    CHECK (durata_minute > 0)
+    FOREIGN KEY (id_produs) REFERENCES produs(id_produs) ON DELETE CASCADE
 );
 
 -- ----------------
@@ -227,6 +221,42 @@ VALUES (6, 1, 10, 'im', '123', 'Ionescu', 'Marius', 5000, '0720111666');
 
 INSERT INTO barman (id_angajat, specializare)
 VALUES (6, 'Milkshake');
+
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (1, 'Mocca Milkshake', 'cafea, finetti, lapte, inghetata', 21);
+
+INSERT INTO bautura (id_produs, ml)
+VALUES (1, 300);
+
+INSERT INTO prepara (id_angajat, id_produs)
+VALUES (6, 1);
+
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (2, 'Milkshake Banane', 'banane, lapte', 16);
+
+INSERT INTO bautura (id_produs, ml)
+VALUES (2, 400);
+
+INSERT INTO prepara (id_angajat, id_produs)
+VALUES (6, 2);
+
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (3, 'Pui Italian', 'piept de pui, mozzarella, rosii, vinete, dovlecei, salata mix', 41);
+
+INSERT INTO preparat (id_produs, grame)
+VALUES (3, 300);
+
+INSERT INTO gateste (id_angajat, id_produs)
+VALUES (4, 3);
+
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (4, 'Spaghete Milaneze', 'spaghete, sunca, ciuperci, ceapa, rosii, condimente/parmezan', 33);
+
+INSERT INTO preparat (id_produs, grame)
+VALUES (4, 400);
+
+INSERT INTO gateste (id_angajat, id_produs)
+VALUES (4, 4);
 
 -- RESTAURANT 20
 INSERT INTO restaurant (id_restaurant, nume, nr_stele, oras, strada, nr_telefon)

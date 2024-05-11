@@ -10,7 +10,7 @@ public class Produs {
     protected static Integer maxIDProdus;
 
     static {
-        maxIDProdus = 1;
+        maxIDProdus = 0;
     }
 
     public Produs(Integer ID, String nume, String descriere, Integer pret) {
@@ -40,8 +40,9 @@ public class Produs {
 
     @Override
     public String toString() {
-        // TODO
-        return super.toString();
+        return "Produs: " + nume + "\n"
+             + "Descriere: " + descriere + "\n"
+             + "Pret: " + pret;
     }
 }
 
