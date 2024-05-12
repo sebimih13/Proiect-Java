@@ -77,11 +77,11 @@ public class Client {
             System.out.println("1. Afisare comenzi in pregatire");
             System.out.println("2. Afisare comenzi livrate");
             System.out.println("3. Efectueaza o noua comanda");
-            System.out.println("3. Anleaza o comanda");
-            System.out.println("4. Editare comanda");
-            System.out.println("5. Afisare date personale");
-            System.out.println("6. Editare date personale");
-            System.out.println("7. Log out");
+            System.out.println("4. Anuleaza o comanda");
+            System.out.println("5. Editare comanda");
+            System.out.println("6. Afisare date personale");
+            System.out.println("7. Editare date personale");
+            System.out.println("8. Log out");
 
             System.out.print("Optiune: ");
 
@@ -112,14 +112,18 @@ public class Client {
                     break;
 
                 case 5:
-                    afisareDatePersonaleMenu();
+                    editareComandaMenu();
                     break;
 
                 case 6:
-                    // TODO
+                    afisareDatePersonaleMenu();
                     break;
 
                 case 7:
+                    editareDatePersonaleMenu();
+                    break;
+
+                case 8:
                     logout = true;
                     break;
             }
@@ -233,6 +237,49 @@ public class Client {
     }
 
     private void stergeComandaMenu() {
+        if (comenzi.size() == 0) {
+            System.out.println("Nu exista comenzi in pregatire!");
+            return;
+        }
+
+        for (int i = 0; i < comenzi.size(); i++) {
+            if (comenzi.get(i).getStatus() == Comanda.Status.InPregatire) {
+                System.out.println((i + 1) + ". " + comenzi.get(i));
+            }
+        }
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        if (option < 1 || comenzi.size() + 1 < option) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            return;
+        }
+
+        try {
+            Database.getInstance().deleteComanda(comenzi.get(option - 1).getID());
+            comenzi.get(option - 1).getRestaurant().deleteComanda(comenzi.get(option - 1));
+            comenzi.remove(comenzi.get(option - 1));
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> stergeComandaMenu()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editareComandaMenu() {
+        // TODO
+    }
+
+    public void editareDatePersonaleMenu() {
         // TODO
     }
 
