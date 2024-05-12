@@ -276,11 +276,115 @@ public class Client {
     }
 
     public void editareComandaMenu() {
-        // TODO
+        if (comenzi.size() == 0) {
+            System.out.println("Nu exista comenzi in pregatire!");
+            return;
+        }
+
+        for (int i = 0; i < comenzi.size(); i++) {
+            if (comenzi.get(i).getStatus() == Comanda.Status.InPregatire) {
+                System.out.println((i + 1) + ". " + comenzi.get(i));
+            }
+        }
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        if (option < 1 || comenzi.size() + 1 < option) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            return;
+        }
+
+        System.out.println("Alegeti o actiune:");
+        System.out.println("1. Schimba cantitatea");
+        System.out.println("2. Adauga produse noi la comanda");
+        System.out.println("3. Sterge un produs");
+        System.out.print("Optiune: ");
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int actiune = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (actiune) {
+            case 1:
+                comenzi.get(option - 1).schimbaCantitateaMenu();
+                break;
+
+            case 2:
+                comenzi.get(option - 1).addProdusMenu();
+                break;
+
+            case 3:
+                comenzi.get(option - 1).deleteProdusMenu();
+                break;
+
+            default:
+                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+                break;
+        }
     }
 
     public void editareDatePersonaleMenu() {
-        // TODO
+        System.out.println("\nAlegeti o optiune:");
+        System.out.println("1. Editare username");
+        System.out.println("2. Editare password");
+        System.out.println("3. Editare nume");
+        System.out.println("4. Editare prenume");
+        System.out.println("5. Editare numar telefon");
+        System.out.println("6. Editare specializare");
+
+        System.out.print("Optiune: ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            scanner.next();
+            return;
+        }
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (option) {
+            case 1:
+                editUsername();
+                break;
+
+            case 2:
+                editPassword();
+                break;
+
+            case 3:
+                editNume();
+                break;
+
+            case 4:
+                editPrenume();
+                break;
+
+            case 5:
+                editNrTelefon();
+                break;
+
+            case 6:
+                editEmail();
+                break;
+
+            default:
+                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+                break;
+        }
     }
 
     public void afisareDatePersonaleMenu() {
@@ -290,6 +394,156 @@ public class Client {
         System.out.println("prenume: " + this.prenume);
         System.out.println("numar telefon: " + this.nrTelefon);
         System.out.println("email: " + this.email);
+    }
+
+    public void editUsername() {
+        String usernameNou = null;
+        while (true) {
+            System.out.print("username: ");
+
+            usernameNou = scanner.nextLine();
+            if (usernameNou.isEmpty()) {
+                System.out.println("username trebuie sa contina cel putin un caracter!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("client", "id_client", "username", usernameNou, this.ID);
+            this.username = usernameNou;
+            System.out.println("username a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editUsername()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editPassword() {
+        String passwordNou = null;
+        while (true) {
+            System.out.print("password: ");
+
+            passwordNou = scanner.nextLine();
+            if (passwordNou.isEmpty()) {
+                System.out.println("password trebuie sa contina cel putin un caracter!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("client", "id_client", "password", passwordNou, this.ID);
+            this.username = passwordNou;
+            System.out.println("password a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editPassword()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editNume() {
+        String numeNou = null;
+        while (true) {
+            System.out.print("nume: ");
+
+            numeNou = scanner.nextLine();
+            if (numeNou.isEmpty()) {
+                System.out.println("numele trebuie sa contina cel putin un caracter!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("client", "id_client", "nume", numeNou, this.ID);
+            this.nume = numeNou;
+            System.out.println("numele a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editNume()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editPrenume() {
+        String prenumeNou = null;
+        while (true) {
+            System.out.print("prenume: ");
+
+            prenumeNou = scanner.nextLine();
+            if (prenumeNou.isEmpty()) {
+                System.out.println("prenumele trebuie sa contina cel putin un caracter!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("client", "id_client", "prenume", prenumeNou, this.ID);
+            this.prenume = prenumeNou;
+            System.out.println("prenumele a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editPrenume()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editNrTelefon() {
+        String nrTelefonNou = null;
+        while (true) {
+            System.out.print("numar telefon: ");
+
+            nrTelefonNou = scanner.nextLine();
+            if (nrTelefon.length() != 10 || !nrTelefon.matches("[0-9]+")) {
+                System.out.println("numarul de telefon trebuie sa contina fix 10 cifre!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("client", "id_client", "nr_telefon", nrTelefonNou, this.ID);
+            this.nrTelefon = nrTelefonNou;
+            System.out.println("numarul de telefon a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editNrTelefon()");
+            e.printStackTrace();
+        }
+    }
+
+    public void editEmail() {
+        String emailNou = null;
+        while (true) {
+            System.out.print("email: ");
+
+            emailNou = scanner.nextLine();
+            if (emailNou.isEmpty()) {
+                System.out.println("email-ul trebuie sa contina cel putin un caracter!");
+                continue;
+            }
+
+            break;
+        }
+
+        try {
+            Database.getInstance().editStringValue("client", "id_client", "email", emailNou, this.ID);
+            this.email = emailNou;
+            System.out.println("email-ul a fost modificat cu succes!");
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> editEmail()");
+            e.printStackTrace();
+        }
     }
 }
 

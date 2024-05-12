@@ -258,11 +258,124 @@ VALUES (4, 400);
 INSERT INTO gateste (id_angajat, id_produs)
 VALUES (4, 4);
 
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (5, 'Cuba Libre', 'Rom, Suc lamaie, Cola', 19);
+
+INSERT INTO bautura (id_produs, ml)
+VALUES (5, 250);
+
+INSERT INTO prepara (id_angajat, id_produs)
+VALUES (5, 5);
+
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (6, 'Pina Colada', 'rom alb, suc de ananas, lapte de cocos', 10);
+
+INSERT INTO bautura (id_produs, ml)
+VALUES (6, 250);
+
+INSERT INTO prepara (id_angajat, id_produs)
+VALUES (5, 6);
+
+INSERT INTO PRODUS (id_produs, nume, descriere, pret)
+VALUES (7, 'Tochitura Moldoveneasca', 'porc, piept de pui, carnati, sos rosu cu usturoi, mamaliga, ou, branza, vin', 45);
+
+INSERT INTO preparat (id_produs, grame)
+VALUES (7, 500);
+
+INSERT INTO gateste (id_angajat, id_produs)
+VALUES (3, 7);
+
 -- RESTAURANT 20
 INSERT INTO restaurant (id_restaurant, nume, nr_stele, oras, strada, nr_telefon)
 VALUES (20, 'Zen Garden Sushi', 5, 'Bucuresti', 'Strada Japonia nr. 12', '0775570200');
 
--- merge si cu NULL
-INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)
-VALUES (1, NULL, 10, "InPregatire", '2024-05-11', '14:30:00')
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+VALUES (7, NULL, 20, 'yamato', '123', 'Yamamoto', 'Takeshi', 7000, '0744231258');
+
+INSERT INTO manager (id_angajat, nivel_educatie)
+VALUES (7, 'Tokyo Business School');
+
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+VALUES (8, 7, 20, 'nakamura', '123', 'Nakamura', 'Emi', 4000, '0744431158');
+
+INSERT INTO ospatar (id_angajat, nivel_engleza)
+VALUES (8, 'B1');
+
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+VALUES (9, 7, 20, 'sato', '123', 'Sato', 'Hiroshi', 4500, '0744431682');
+
+INSERT INTO ospatar (id_angajat, nivel_engleza)
+VALUES (9, 'B2');
+
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+VALUES (10, 7, 20, 'suzuki', '123', 'Suzuki', 'Kazuki', 6400, '0744431458');
+
+INSERT INTO sef_bucatar (id_angajat, specializare)
+VALUES (10, 'Bucataria din Japonia');
+
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+VALUES (11, 7, 20, 'ryo', '123', 'Watanabe', 'Ryo', 6600, '0744123258');
+
+INSERT INTO sef_bucatar (id_angajat, specializare)
+VALUES (11, 'Bucataria din Japonia');
+
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+VALUES (12, 7, 20, 'kenji', '123', 'Takahashi', 'Kenji', 6800, '0744631559');
+
+INSERT INTO sef_bucatar (id_angajat, specializare)
+VALUES (12, 'Bucataria din Japonia');
+
+INSERT INTO angajat (id_angajat, id_manager, id_restaurant, username, password, nume, prenume, salariu, nr_telefon)
+VALUES (13, 7, 20, 'misaki', '123', 'Ishikawa', 'Misaki', 5000, '0744643658');
+
+INSERT INTO barman (id_angajat, specializare)
+VALUES (13, 'Cafea');
+
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (8, 'Cafe Latte', 'Cafea, Lapte, Crema de lapte', 17);
+
+INSERT INTO bautura (id_produs, ml)
+VALUES (8, 250);
+
+INSERT INTO prepara (id_angajat, id_produs)
+VALUES (13, 8);
+
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (9, 'Sushi Salmon Dragon', 'Orez, somon, praz, ardei iute, sriracha, sos de maioneza picanta', 60);
+
+INSERT INTO preparat (id_produs, grame)
+VALUES (9, 300);
+
+INSERT INTO gateste (id_angajat, id_produs)
+VALUES (10, 9);
+
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (10, 'Onigirazu', 'Orez, vitel, ou, alga, pesmet', 60);
+
+INSERT INTO preparat (id_produs, grame)
+VALUES (10, 300);
+
+INSERT INTO gateste (id_angajat, id_produs)
+VALUES (11, 10);
+
+INSERT INTO produs (id_produs, nume, descriere, pret)
+VALUES (11, 'Sushi California', 'Orez sushi, creveti, avocado, castraveti, susan, maioneza', 60);
+
+INSERT INTO preparat (id_produs, grame)
+VALUES (11, 300);
+
+INSERT INTO gateste (id_angajat, id_produs)
+VALUES (12, 11);
+
+-- CLIENTI
+INSERT INTO client (id_client, username, password, nume, prenume, nr_telefon, email)
+VALUES (1, 'teo', '123', 'Teohari', 'Claudiu', '0774830111', 'claudiu.teohari@cnsc.com');
+
+INSERT INTO client (id_client, username, password, nume, prenume, nr_telefon, email)
+VALUES (2, 'tomi', '123', 'Popescu', 'Tomi', '0775235987', 'tomi@fr.com');
+
+-- COMENZI
+-- TODO
+-- INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)
+-- VALUES ();
 
