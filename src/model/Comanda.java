@@ -89,10 +89,6 @@ public class Comanda {
         cantitati.put(produs, cantitate);
     }
 
-    public void editComanda() {
-        // TODO
-    }
-
     public void finalizareComanda() {
         status = Status.Livrata;
     }

@@ -20,8 +20,8 @@ public class Database {
     private Map<Integer, Angajat> angajati;
     private Map<Integer, Produs> produse;
     private Map<Integer, Comanda> comenzi;
+    private Map<Integer, Client> clienti;
 
-    // TODO: bloc normal? / bloc static? / constructor?
     static {
         loadDriver();
         createConnection();
@@ -32,6 +32,7 @@ public class Database {
         angajati = new HashMap<>();
         produse = new HashMap<>();
         comenzi = new HashMap<>();
+        clienti = new HashMap<>();
 
         loadDatabase();
     }
@@ -50,6 +51,18 @@ public class Database {
 
     public Map<Integer, Angajat> getAngajati() {
         return angajati;
+    }
+
+    public Map<Integer, Produs> getProduse() {
+        return produse;
+    }
+
+    public Map<Integer, Comanda> getComenzi() {
+        return comenzi;
+    }
+
+    public Map<Integer, Client> getClienti() {
+        return clienti;
     }
 
     private static void loadDriver() {
@@ -106,6 +119,9 @@ public class Database {
                                  + "FROM comanda c JOIN contine con ON (c.id_comanda = con.id_comanda)" + "\n"
                                  + "               JOIN produs p ON (con.id_produs = p.id_produs);";
 
+        String SQLClient = "SELECT c.id_client, c.username, c.password, c.nume, c.prenume, c.nr_telefon, c.email" + "\n"
+                         + "FROM client c;";
+
         // execute SQL
         try {
             // restaurante
@@ -156,7 +172,10 @@ public class Database {
             }
 
             // clienti
-            // TODO
+            rs = connection.prepareStatement(SQLClient).executeQuery();
+            while (rs.next()) {
+                clienti.put(rs.getInt(1), new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)));
+            }
 
             // comenzi
             rs = connection.prepareStatement(SQLComanda).executeQuery();
@@ -164,6 +183,10 @@ public class Database {
 
                 comenzi.put(rs.getInt(1), new Comanda(rs.getInt(1), (Objects.equals(rs.getString(4), "InPregatire")) ? Comanda.Status.InPregatire : Comanda.Status.Livrata, rs.getDate(5), rs.getTime(6), restaurante.get(rs.getInt(3))));
                 restaurante.get(rs.getInt(3)).addComanda(comenzi.get(rs.getInt(1)));
+                rs.getInt(2);
+                if (!rs.wasNull()) {
+                    clienti.get(rs.getInt(2)).addComanda(comenzi.get(rs.getInt(1)));
+                }
             }
 
             // continut comanda
@@ -418,6 +441,36 @@ public class Database {
         PreparedStatement preparedStatement = connection.prepareStatement(SQLDeleteContine);
         preparedStatement.setInt(1, produs.getID());
         preparedStatement.setInt(2, comanda.getID());
+        preparedStatement.executeUpdate();
+    }
+
+    public void addClient(Client client) throws SQLException {
+        clienti.put(client.getID(), client);
+
+        String SQLInsertClient = "INSERT INTO client (id_client, username, password, nume, prenume, nr_telefon, email)" + "\n"
+                               + "VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLInsertClient);
+        preparedStatement.setInt(1, client.getID());
+        preparedStatement.setString(2, client.getUsername());
+        preparedStatement.setString(3, client.getPassword());
+        preparedStatement.setString(4, client.getNume());
+        preparedStatement.setString(5, client.getPrenume());
+        preparedStatement.setString(6, client.getNrTelefon());
+        preparedStatement.setString(7, client.getEmail());
+
+        preparedStatement.executeUpdate();
+    }
+
+    public void deleteClient(Integer ID) throws SQLException {
+        clienti.remove(ID);
+
+        String SQLDeleteClient = "DELETE FROM client" + "\n"
+                               + "WHERE id_client = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLDeleteClient);
+        preparedStatement.setInt(1, ID);
+
         preparedStatement.executeUpdate();
     }
 

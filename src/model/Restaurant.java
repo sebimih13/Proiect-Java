@@ -98,5 +98,13 @@ public class Restaurant {
 
         return produse;
     }
+
+    @Override
+    public String toString() {
+        return this.ID + ". " + this.nume + "\n"
+             + "stele: " + this.nrStele + "\n"
+             + "oras: " + this.oras + "\n"
+             + "strada: " + this.strada + "\n";
+    }
 }
 

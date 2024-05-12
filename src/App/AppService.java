@@ -1,5 +1,6 @@
 package App;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Map;
@@ -121,13 +122,20 @@ public class AppService {
                 break;
 
             case Client:
-                // TODO
+                clientAutentificat = getClient(username, password);
+                if (clientAutentificat == null) {
+                    System.out.println("Datele introduse sunt gresite");
+                }
+                else {
+                    System.out.println("\nBine ai revenit!");
+                    clientAutentificat.menu();
+                }
                 break;
         }
     }
 
     private void newClientMenu() {
-        System.out.println("\nCompletati urmatoarele informatii");
+        System.out.println("\nCompletati urmatoarele informatii:");
 
         String username = null;
         while (true) {
@@ -198,8 +206,13 @@ public class AppService {
             break;
         }
 
-        // TODO: adaugare si celelalte atribute
-        // TODO: adaugare in baza de date
+        try {
+            Database.getInstance().addClient(new Client(++Client.maxIDClient, username, password, nume, prenume, nrTelefon, email));
+        }
+        catch (SQLException e) {
+            System.out.println("FAILED -> newClientMenu()");
+            e.printStackTrace();
+        }
     }
 
     private Angajat getAngajat(String username, String password) {
@@ -207,6 +220,17 @@ public class AppService {
             Angajat angajat = entry.getValue();
             if (Objects.equals(angajat.getUsername(), username) && Objects.equals(angajat.getPassword(), password)) {
                 return angajat;
+            }
+        }
+
+        return null;
+    }
+
+    private Client getClient(String username, String password) {
+        for (Map.Entry<Integer, Client> entry : Database.getInstance().getClienti().entrySet()) {
+            Client client = entry.getValue();
+            if (Objects.equals(client.getUsername(), username) && Objects.equals(client.getPassword(), password)) {
+                return client;
             }
         }
 

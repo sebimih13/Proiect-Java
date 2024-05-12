@@ -55,7 +55,6 @@ public class Main {
     - Client
         => poate sa initieze comenzi in aplicatie
             => selecteaza restaurantul
-            => selecteaza data_livrare
             => selecteaza produse: preparate + bautura
         => anuleaza comanda
         
