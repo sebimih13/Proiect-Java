@@ -166,7 +166,7 @@ public class Ospatar extends Angajat {
     }
 
     private void adaugareComandaMenu() {
-        Comanda comandaNoua = new Comanda(++Comanda.maxIDComanda);
+        Comanda comandaNoua = new Comanda(++Comanda.maxIDComanda, getRestaurant());
 
         List<Produs> produse = new ArrayList<>(getRestaurant().getProduse());
 
@@ -225,7 +225,7 @@ public class Ospatar extends Angajat {
 
         try {
             getRestaurant().addComanda(comandaNoua);
-            Database.getInstance().addComanda(comandaNoua, null, getRestaurant());
+            Database.getInstance().addComanda(comandaNoua, null);
         }
         catch (SQLException e) {
             System.out.println("FAILED -> adaugareComandaMenu()");
@@ -310,6 +310,7 @@ public class Ospatar extends Angajat {
         System.out.println("Alegeti o actiune:");
         System.out.println("1. Schimba cantitatea");
         System.out.println("2. Adauga produse noi la comanda");
+        System.out.println("3. Sterge un produs");
         System.out.print("Optiune: ");
         if (!scanner.hasNextInt()) {
             System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
@@ -327,6 +328,10 @@ public class Ospatar extends Angajat {
 
             case 2:
                 comenzi.get(option - 1).addProdusMenu();
+                break;
+
+            case 3:
+                comenzi.get(option - 1).deleteProdusMenu();
                 break;
 
             default:

@@ -162,7 +162,7 @@ public class Database {
             rs = connection.prepareStatement(SQLComanda).executeQuery();
             while (rs.next()) {
 
-                comenzi.put(rs.getInt(1), new Comanda(rs.getInt(1), (Objects.equals(rs.getString(4), "InPregatire")) ? Comanda.Status.InPregatire : Comanda.Status.Livrata, rs.getDate(5), rs.getTime(6)));
+                comenzi.put(rs.getInt(1), new Comanda(rs.getInt(1), (Objects.equals(rs.getString(4), "InPregatire")) ? Comanda.Status.InPregatire : Comanda.Status.Livrata, rs.getDate(5), rs.getTime(6), restaurante.get(rs.getInt(3))));
                 restaurante.get(rs.getInt(3)).addComanda(comenzi.get(rs.getInt(1)));
             }
 
@@ -361,7 +361,7 @@ public class Database {
         // TODO: DELETE FROM prepara + gateste
     }
 
-    public void addComanda(Comanda comanda, Client client, Restaurant restaurant) throws SQLException {
+    public void addComanda(Comanda comanda, Client client) throws SQLException {
         // comenzi.put(comanda.getID(), comanda);
 
         String SQLInsertComanda = "INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)" + "\n"
@@ -374,36 +374,50 @@ public class Database {
         } else {
             preparedStatement.setNull(2, java.sql.Types.INTEGER);
         }
-        preparedStatement.setInt(3, restaurant.getID());
+        preparedStatement.setInt(3, comanda.getRestaurant().getID());
         preparedStatement.setString(4, comanda.getStatus().toString());
         preparedStatement.setDate(5, comanda.getData());
         preparedStatement.setTime(6, comanda.getOra());
 
         preparedStatement.executeUpdate();
 
-        String SQLInsertContine = "INSERT INTO contine (id_produs, id_comanda, cantitate)" + "\n"
-                                + "VALUES (?, ?, ?);";
-
         for (Produs produs : comanda.getProduse()) {
-            preparedStatement = connection.prepareStatement(SQLInsertContine);
-            preparedStatement.setInt(1, produs.getID());
-            preparedStatement.setInt(2, comanda.getID());
-            preparedStatement.setInt(3, comanda.getCantitati().get(produs));
-
-            preparedStatement.executeUpdate();
+            addContine(produs, comanda);
         }
     }
 
     public void deleteComanda(int ID) throws SQLException {
-        // TODO: use
-        String SQLDeleteContine = "DELETE FROM contine" + "\n"
-                                + "WHERE id_produs = ? AND id_comanda = ?;";
-
         String SQLDeleteComanda = "DELETE FROM comanda" + "\n"
                                 + "WHERE id_comanda = ?;";
 
+        for (Produs produs : comenzi.get(ID).getProduse()) {
+            deleteContine(produs, comenzi.get(ID));
+        }
+
         PreparedStatement preparedStatement = connection.prepareStatement(SQLDeleteComanda);
         preparedStatement.setInt(1, ID);
+        preparedStatement.executeUpdate();
+    }
+
+    public void addContine(Produs produs, Comanda comanda) throws SQLException {
+        String SQLInsertContine = "INSERT INTO contine (id_produs, id_comanda, cantitate)" + "\n"
+                                + "VALUES (?, ?, ?);";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLInsertContine);
+        preparedStatement.setInt(1, produs.getID());
+        preparedStatement.setInt(2, comanda.getID());
+        preparedStatement.setInt(3, comanda.getCantitati().get(produs));
+
+        preparedStatement.executeUpdate();
+    }
+
+    public void deleteContine(Produs produs, Comanda comanda) throws SQLException {
+        String SQLDeleteContine = "DELETE FROM contine" + "\n"
+                                + "WHERE id_produs = ? AND id_comanda = ?;";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLDeleteContine);
+        preparedStatement.setInt(1, produs.getID());
+        preparedStatement.setInt(2, comanda.getID());
         preparedStatement.executeUpdate();
     }
 
