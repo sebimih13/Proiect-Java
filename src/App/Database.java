@@ -1,9 +1,9 @@
 package App;
 
 import java.sql.*;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Objects;
+import java.util.Map;
+import java.util.TreeMap;
 
 import model.*;
 
@@ -28,11 +28,11 @@ public class Database {
     }
 
     private Database() {
-        restaurante = new HashMap<>();
-        angajati = new HashMap<>();
-        produse = new HashMap<>();
-        comenzi = new HashMap<>();
-        clienti = new HashMap<>();
+        restaurante = new TreeMap<>();
+        angajati = new TreeMap<>();
+        produse = new TreeMap<>();
+        comenzi = new TreeMap<>();
+        clienti = new TreeMap<>();
 
         loadDatabase();
     }

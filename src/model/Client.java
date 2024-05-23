@@ -131,23 +131,39 @@ public class Client {
     }
 
     private void afisareComenziInPregatireMenu() {
+        System.out.print("\n");
+
+        int nrComenzi = 0;
         for (Comanda comanda : comenzi) {
             if (comanda.getStatus() == Comanda.Status.InPregatire) {
                 System.out.println(comanda);
+                nrComenzi++;
             }
+        }
+
+        if (nrComenzi == 0) {
+            System.out.println("Nu exista comenzi in pregatire");
         }
     }
 
     private void afisareComenziLivrateMenu() {
+        System.out.print("\n");
+
+        int nrComenzi = 0;
         for (Comanda comanda : comenzi) {
             if (comanda.getStatus() == Comanda.Status.Livrata) {
                 System.out.println(comanda);
+                nrComenzi++;
             }
+        }
+
+        if (nrComenzi == 0) {
+            System.out.printf("Nu exista comenzi in pregatire");
         }
     }
 
     private void adaugareComandaMenu() {
-        System.out.println("Selecteaza restaurantul:");
+        System.out.println("\nSelecteaza restaurantul:");
         for (Map.Entry<Integer, Restaurant> entry : Database.getInstance().getRestaurante().entrySet()) {
             Restaurant restaurant = entry.getValue();
             System.out.println(restaurant);
@@ -167,20 +183,24 @@ public class Client {
             scanner.nextLine();
 
             restaurant = Database.getInstance().getRestaurante().get(optionRestaurant);
+            if (restaurant == null) {
+                System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
+            }
         }
 
         Comanda comandaNoua = new Comanda(++Comanda.maxIDComanda, restaurant);
 
         List<Produs> produse = new ArrayList<>(restaurant.getProduse());
 
+        // afisare meniu
+        System.out.println("\nAlege produsul:");
+        for (int i = 0; i < produse.size(); i++) {
+            System.out.println((i + 1) + ". " + produse.get(i) + "\n");
+        }
+        System.out.println((produse.size() + 1) + ". Incheie comanda");
+
         boolean comandaIncheiata = false;
         while (!comandaIncheiata) {
-            System.out.println("\nAlege produsul:");
-            for (int i = 0; i < produse.size(); i++) {
-                System.out.printf((i + 1) + ". " + produse.get(i) + "\n");
-            }
-            System.out.println((produse.size() + 1) + ". Incheie comanda");
-
             System.out.print("Optiune: ");
 
             if (!scanner.hasNextInt()) {
@@ -226,7 +246,13 @@ public class Client {
             comandaNoua.adaugaProdus(produse.get(option - 1), cantitate);
         }
 
+        if (comandaNoua.calcularePret() == 0) {
+            System.out.println("Comanda a fost anulata");
+            return;
+        }
+
         try {
+            this.addComanda(comandaNoua);
             restaurant.addComanda(comandaNoua);
             Database.getInstance().addComanda(comandaNoua, this);
         }
@@ -237,15 +263,17 @@ public class Client {
     }
 
     private void stergeComandaMenu() {
-        if (comenzi.size() == 0) {
-            System.out.println("Nu exista comenzi in pregatire!");
-            return;
-        }
-
+        int nrComenzi = 0;
         for (int i = 0; i < comenzi.size(); i++) {
             if (comenzi.get(i).getStatus() == Comanda.Status.InPregatire) {
                 System.out.println((i + 1) + ". " + comenzi.get(i));
+                nrComenzi++;
             }
+        }
+
+        if (nrComenzi == 0) {
+            System.out.println("\nNu exista comenzi in pregatire!");
+            return;
         }
 
         System.out.print("Optiune: ");
@@ -276,15 +304,17 @@ public class Client {
     }
 
     public void editareComandaMenu() {
-        if (comenzi.size() == 0) {
-            System.out.println("Nu exista comenzi in pregatire!");
-            return;
-        }
-
+        int nrComenzi = 0;
         for (int i = 0; i < comenzi.size(); i++) {
             if (comenzi.get(i).getStatus() == Comanda.Status.InPregatire) {
                 System.out.println((i + 1) + ". " + comenzi.get(i));
+                nrComenzi++;
             }
+        }
+
+        if (nrComenzi == 0) {
+            System.out.println("\nNu exista comenzi in pregatire!");
+            return;
         }
 
         System.out.print("Optiune: ");

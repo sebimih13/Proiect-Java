@@ -95,13 +95,15 @@ public class Comanda {
 
     @Override
     public String toString() {
-        String rezumatComanda = "plasata: " + data + " " + ora + " " + status.toString() + "\n";
+        StringBuilder rezumatComanda = new StringBuilder();
+        rezumatComanda.append("plasata: " + data + " " + ora + " " + status.toString() + "\n");
+        rezumatComanda.append("Total: " + calcularePret() + " RON\n");
 
         for (Produs produs : produse) {
-            rezumatComanda += produs.getNume() + " x" + cantitati.get(produs) + "\n";
+            rezumatComanda.append(produs.getNume() + " x" + cantitati.get(produs) + "\n");
         }
 
-        return rezumatComanda;
+        return rezumatComanda.toString();
     }
 
     public void schimbaCantitateaMenu() {
@@ -159,13 +161,15 @@ public class Comanda {
     public void addProdusMenu() {
         List<Produs> produse = new ArrayList<>(restaurant.getProduse());
 
+        // afisare meniu
+        System.out.println("\nAlege produsul:");
+        for (int i = 0; i < produse.size(); i++) {
+            System.out.printf((i + 1) + ". " + produse.get(i) + "\n");
+        }
+        System.out.println((produse.size() + 1) + ". Incheie comanda");
+
         boolean comandaIncheiata = false;
         while (!comandaIncheiata) {
-            System.out.println("\nAlege produsul:");
-            for (int i = 0; i < produse.size(); i++) {
-                System.out.printf((i + 1) + ". " + produse.get(i) + "\n");
-            }
-            System.out.println((produse.size() + 1) + ". Incheie comanda");
 
             System.out.print("Optiune: ");
 
@@ -255,6 +259,15 @@ public class Comanda {
             System.out.println("FAILED -> deleteProdusMenu()");
             e.printStackTrace();
         }
+    }
+
+    public int calcularePret() {
+        int total = 0;
+        for (Produs produs : produse) {
+            total += cantitati.get(produs) * produs.getPret();
+        }
+
+        return total;
     }
 }
 

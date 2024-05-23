@@ -375,7 +375,40 @@ INSERT INTO client (id_client, username, password, nume, prenume, nr_telefon, em
 VALUES (2, 'tomi', '123', 'Popescu', 'Tomi', '0775235987', 'tomi@fr.com');
 
 -- COMENZI
--- TODO
--- INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)
--- VALUES ();
+INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)
+VALUES (1, 1, 10, "Livrata", '2024-05-23', '14:30:00');
+
+INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)
+VALUES (2, 1, 10, "Livrata", '2024-05-22', '14:30:00');
+
+INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)
+VALUES (3, 2, 20, "Livrata", '2024-05-20', '14:30:00');
+
+-- CONTINE
+INSERT INTO contine (id_produs, id_comanda, cantitate) 
+VALUES (1, 1, 2);
+
+INSERT INTO contine (id_produs, id_comanda, cantitate) 
+VALUES (3, 1, 1);
+
+INSERT INTO contine (id_produs, id_comanda, cantitate) 
+VALUES (4, 1, 1);
+
+INSERT INTO contine (id_produs, id_comanda, cantitate) 
+VALUES (5, 2, 1);
+
+INSERT INTO contine (id_produs, id_comanda, cantitate) 
+VALUES (7, 2, 1);
+
+INSERT INTO contine (id_produs, id_comanda, cantitate) 
+VALUES (8, 3, 3);
+
+INSERT INTO contine (id_produs, id_comanda, cantitate) 
+VALUES (9, 3, 1);
+
+INSERT INTO contine (id_produs, id_comanda, cantitate) 
+VALUES (10, 3, 1);
+
+INSERT INTO contine (id_produs, id_comanda, cantitate) 
+VALUES (11, 3, 1);
 

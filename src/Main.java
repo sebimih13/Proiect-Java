@@ -1,9 +1,10 @@
 import App.AppService;
 import App.Database;
+import App.AuditService;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        System.out.println("Starting application...");
 
         // init App.Database
         Database.getInstance();
@@ -15,8 +16,6 @@ public class Main {
         AppService.getInstance().run();
     }
 }
-
-// TODO: baza de date -> oricate caractere pt VARCHAR
 
 /*
 

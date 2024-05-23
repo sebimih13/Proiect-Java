@@ -48,7 +48,7 @@ public class Produs {
 
     @Override
     public String toString() {
-        return "Produs: " + nume + "\n"
+        return nume + "\n"
              + "Descriere: " + descriere + "\n"
              + "Pret: " + pret;
     }
