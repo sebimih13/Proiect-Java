@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.Map;
 
-public class AppService {
+public class AppService implements InputDatePersonale {
     enum Utilizator {
         Angajat,
         Client
@@ -69,7 +69,12 @@ public class AppService {
                     break;
 
                 case 3:
-                    newClientMenu();
+                    try {
+                        newClientMenu();
+                    }
+                    catch (UniqueValueException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case 4:
@@ -135,80 +140,43 @@ public class AppService {
         }
     }
 
-    private void newClientMenu() {
+    private void newClientMenu() throws UniqueValueException {
         System.out.println("\nCompletati urmatoarele informatii:");
 
-        String username = null;
-        while (true) {
-            System.out.print("username: ");
-            username = scanner.nextLine();
-            if (username.isEmpty()) {
-                System.out.println("username trebuie sa contina cel putin un caracter!");
-                continue;
+        String username = inputUsername();
+        for (Map.Entry<Integer, Client> entry : Database.getInstance().getClienti().entrySet()) {
+            Client client = entry.getValue();
+            if (Objects.equals(client.getUsername(), username)) {
+                throw new UniqueValueException("Exista deja in baza de date un client cu acest username");
             }
-            // TODO: verificare sa nu existe deja in baza de date
-            break;
         }
 
-        String password = null;
-        while (true) {
-            System.out.print("password: ");
-            password = scanner.nextLine();
-            if (password.isEmpty()) {
-                System.out.println("password trebuie sa contina cel putin un caracter!");
-                continue;
+        String password = inputPassword();
+
+        String nume = inputNume();
+
+        String prenume = inputPrenume();
+
+        String email = inputEmail();
+        for (Map.Entry<Integer, Client> entry : Database.getInstance().getClienti().entrySet()) {
+            Client client = entry.getValue();
+            if (Objects.equals(client.getEmail(), email)) {
+                throw new UniqueValueException("Exista deja in baza de date un client cu acest email");
             }
-            break;
         }
 
-        String nume = null;
-        while (true) {
-            System.out.print("nume: ");
-            nume = scanner.nextLine();
-            if (nume.isEmpty()) {
-                System.out.println("numele trebuie sa contina cel putin un caracter!");
-                continue;
+        String nrTelefon = inputNrTelefon();
+        for (Map.Entry<Integer, Client> entry : Database.getInstance().getClienti().entrySet()) {
+            Client client = entry.getValue();
+            if (Objects.equals(client.getNrTelefon(), nrTelefon)) {
+                throw new UniqueValueException("Exista deja in baza de date un client cu acest numar de telefon");
             }
-            break;
-        }
-
-        String prenume = null;
-        while (true) {
-            System.out.print("prenume: ");
-            prenume = scanner.nextLine();
-            if (prenume.isEmpty()) {
-                System.out.println("prenumele trebuie sa contina cel putin un caracter!");
-                continue;
-            }
-            break;
-        }
-
-        String email = null;
-        while (true) {
-            System.out.print("email: ");
-            email = scanner.nextLine();
-            if (email.isEmpty()) {
-                System.out.println("email trebuie sa contina cel putin un caracter!");
-                continue;
-            }
-            // TODO: verificare sa nu existe deja in baza de date
-            break;
-        }
-
-        String nrTelefon = null;
-        while (true) {
-            System.out.print("numar telefon: ");
-            nrTelefon = scanner.nextLine();
-            if (nrTelefon.length() != 10 || !nrTelefon.matches("[0-9]+")) {
-                System.out.println("numarul de telefon trebuie sa contina fix 10 cifre!");
-                continue;
-            }
-            // TODO: verificare sa nu existe deja in baza de date
-            break;
         }
 
         try {
             Database.getInstance().addClient(new Client(++Client.maxIDClient, username, password, nume, prenume, nrTelefon, email));
+
+            AuditService.getInstance().writeAction("System", "System", "Client nou: " + username);
         }
         catch (SQLException e) {
             System.out.println("FAILED -> newClientMenu()");
