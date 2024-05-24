@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import App.AuditService;
 import App.Database;
 
 public class Manager extends Angajat {
@@ -46,10 +47,7 @@ public class Manager extends Angajat {
 
             switch (option) {
                 case 1:
-                    System.out.println("\nSubordonati:");
-                    for (int i = 0; i < subordonati.size(); i++) {
-                        System.out.println(subordonati.get(i));
-                    }
+                    afisareSubordonati();
                     break;
 
                 case 2:
@@ -57,6 +55,8 @@ public class Manager extends Angajat {
                         Angajat subordonatNou = adaugareAngajatNouMenu();
                         Database.getInstance().addAngajat(subordonatNou);
                         addSubordonat(subordonatNou);
+
+                        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "adaugareAngajatNouMenu");
                     }
                     catch (SQLException e) {
                         System.out.println("FAILED -> adaugare angajat nou");
@@ -93,6 +93,15 @@ public class Manager extends Angajat {
 
     public void addSubordonat(Angajat subordonat) {
         subordonati.add(subordonat);
+    }
+
+    private void afisareSubordonati() {
+        System.out.println("\nSubordonati:");
+        for (int i = 0; i < subordonati.size(); i++) {
+            System.out.println(subordonati.get(i));
+        }
+
+        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "afisareSubordonati");
     }
 
     private Angajat adaugareAngajatNouMenu() {
@@ -271,6 +280,8 @@ public class Manager extends Angajat {
                     Database.getInstance().deleteAngajat(option);
                     subordonati.remove(i);
                     System.out.println("Angajatul a fost sters din baza de date");
+
+                    AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "deleteSubodonat");
                     return;
                 }
                 catch (SQLException e) {
@@ -314,6 +325,7 @@ public class Manager extends Angajat {
         }
 
         subordonat.editSalariu();
+        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editSalariu");
         System.out.println("Salariul a fost modificat!");
     }
 
@@ -386,6 +398,8 @@ public class Manager extends Angajat {
         try {
             Database.getInstance().editStringValue("angajat", "id_angajat", "nivel_educatie", nivelEducatieNou, this.getID());
             this.nivelEducatie = nivelEducatieNou;
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editNivelEducatie");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editNivelEducatie()");
