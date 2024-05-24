@@ -17,10 +17,3 @@ public class Main {
     }
 }
 
-/*
-
-    - Comanda
-        => la afisare adauga pretul final
-
-*/
-

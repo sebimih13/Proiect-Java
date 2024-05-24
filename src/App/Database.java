@@ -1,11 +1,10 @@
 package App;
 
+import model.*;
 import java.sql.*;
 import java.util.Objects;
 import java.util.Map;
 import java.util.TreeMap;
-
-import model.*;
 
 public class Database {
     private static Database instance = null;
@@ -299,8 +298,6 @@ public class Database {
         preparedStatement = connection.prepareStatement(SQLDeleteAngajat);
         preparedStatement.setInt(1, ID);
         preparedStatement.executeUpdate();
-
-        // TODO: DELETE FROM prepara + gateste
     }
 
     public void addProdus(Produs produs, Angajat angajat) throws SQLException {
@@ -380,8 +377,6 @@ public class Database {
         preparedStatement = connection.prepareStatement(SQLDeleteProdus);
         preparedStatement.setInt(1, ID);
         preparedStatement.executeUpdate();
-
-        // TODO: DELETE FROM prepara + gateste
     }
 
     public void addComanda(Comanda comanda, Client client) throws SQLException {

@@ -1,11 +1,10 @@
 package App;
 
+import model.*;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Map;
-
-import model.*;
 
 public class AppService {
     enum Utilizator {
