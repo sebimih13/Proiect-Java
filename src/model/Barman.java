@@ -1,5 +1,6 @@
 package model;
 
+import App.AuditService;
 import App.Database;
 
 import java.sql.SQLException;
@@ -17,6 +18,10 @@ public class Barman extends Angajat {
 
     public String getSpecializare() {
         return specializare;
+    }
+
+    public ArrayList<Bautura> getBauturi() {
+        return bauturi;
     }
 
     @Override
@@ -146,6 +151,8 @@ public class Barman extends Angajat {
         for (int i = 0; i < bauturi.size(); i++) {
             System.out.println(bauturi.get(i) + "\n");
         }
+
+        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "afisareBauturiMenu");
     }
 
     private void adaugareBauturaMenu() {
@@ -209,6 +216,8 @@ public class Barman extends Angajat {
             Bautura bauturaNou = new Bautura(++Bautura.maxIDProdus, nume, descriere, pret, ml);
             Database.getInstance().addProdus(bauturaNou, this);
             addBautura(bauturaNou);
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "adaugareBauturaMenu");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> adaugareBauturaMenu()");
@@ -240,6 +249,8 @@ public class Barman extends Angajat {
                     Database.getInstance().deleteProdus(option);
                     bauturi.remove(i);
                     System.out.println("Bautura a fost stersa din baza de date");
+
+                    AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(),"stergeBauturaMenu");
                     return;
                 }
                 catch (SQLException e) {
@@ -302,18 +313,22 @@ public class Barman extends Angajat {
         switch (option) {
             case 1:
                 bautura.editNume();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareBautura -> editNume");
                 break;
 
             case 2:
                 bautura.editDescriere();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareBautura -> editDescriere");
                 break;
 
             case 3:
                 bautura.editPret();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareBautura -> editPret");
                 break;
 
             case 4:
                 bautura.editMl();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareBautura -> editMl");
                 break;
 
             default:
@@ -345,15 +360,13 @@ public class Barman extends Angajat {
         try {
             Database.getInstance().editStringValue("barman", "id_angajat", "specializare", specializareNou, this.getID());
             this.specializare = specializareNou;
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editSpecializare");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editSpecializare()");
             e.printStackTrace();
         }
-    }
-
-    public ArrayList<Bautura> getBauturi() {
-        return bauturi;
     }
 }
 

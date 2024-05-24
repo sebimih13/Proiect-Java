@@ -9,6 +9,9 @@ public class Main {
         // init App.Database
         Database.getInstance();
 
+        // init App.AuditService
+        AuditService.getInstance();
+
         // init App.AppService
         AppService.getInstance();
 

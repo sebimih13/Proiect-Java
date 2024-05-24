@@ -1,5 +1,6 @@
 package model;
 
+import App.AuditService;
 import App.Database;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -152,6 +153,8 @@ public class Ospatar extends Angajat {
         try {
             Database.getInstance().editStringValue("angajat", "id_angajat", "nivel_engleza", nivelEnglezaNou, this.getID());
             this.nivelEngleza = nivelEnglezaNou;
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareBautura -> editNivelEngleza");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editNivelEngleza()");
@@ -226,6 +229,8 @@ public class Ospatar extends Angajat {
         try {
             getRestaurant().addComanda(comandaNoua);
             Database.getInstance().addComanda(comandaNoua, null);
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "adaugareComandaMenu");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> adaugareComandaMenu()");
@@ -268,6 +273,8 @@ public class Ospatar extends Angajat {
         try {
             Database.getInstance().deleteComanda(comenzi.get(option - 1).getID());
             getRestaurant().deleteComanda(comenzi.get(option - 1));
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "stergeComandaMenu");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> stergeComandaMenu()");
@@ -324,14 +331,17 @@ public class Ospatar extends Angajat {
         switch (actiune) {
             case 1:
                 comenzi.get(option - 1).schimbaCantitateaMenu();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareComandaMenu -> schimbaCantitateaMenu");
                 break;
 
             case 2:
                 comenzi.get(option - 1).addProdusMenu();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareComandaMenu -> addProdusMenu");
                 break;
 
             case 3:
                 comenzi.get(option - 1).deleteProdusMenu();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareComandaMenu -> deleteProdusMenu");
                 break;
 
             default:
@@ -375,6 +385,8 @@ public class Ospatar extends Angajat {
         try {
             Database.getInstance().editStringValue("comanda", "id_comanda", "status", Comanda.Status.Livrata.toString(), comenzi.get(option - 1).getID());
             comenzi.get(option - 1).finalizareComanda();
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareComandaMenu -> finalizareComanda");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> finalizareComanda()");

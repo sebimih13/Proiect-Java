@@ -1,5 +1,6 @@
 package model;
 
+import App.AuditService;
 import App.Database;
 
 import java.sql.SQLException;
@@ -17,6 +18,10 @@ public class SefBucatar extends Angajat {
 
     public String getSpecializare() {
         return specializare;
+    }
+
+    public ArrayList<Preparat> getPreparate() {
+        return preparate;
     }
 
     @Override
@@ -158,6 +163,8 @@ public class SefBucatar extends Angajat {
         try {
             Database.getInstance().editStringValue("sef_bucatar", "id_angajat", "specializare", specializareNou, this.getID());
             this.specializare = specializareNou;
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editSpecializare");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editSpecializare()");
@@ -170,6 +177,8 @@ public class SefBucatar extends Angajat {
         for (int i = 0; i < preparate.size(); i++) {
             System.out.println(preparate.get(i) + "\n");
         }
+
+        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "afisarePreparateMenu");
     }
 
     private void adaugarePreparatMenu() {
@@ -233,6 +242,8 @@ public class SefBucatar extends Angajat {
             Preparat preparatNou = new Preparat(++Preparat.maxIDProdus, nume, descriere, pret, grame);
             Database.getInstance().addProdus(preparatNou, this);
             addPreparat(preparatNou);
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "adaugarePreparatMenu");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> adaugare preparat nou");
@@ -264,6 +275,8 @@ public class SefBucatar extends Angajat {
                     Database.getInstance().deleteProdus(option);
                     preparate.remove(i);
                     System.out.println("Preparatul a fost sters din baza de date");
+
+                    AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "stergePreparatMenu");
                     return;
                 }
                 catch (SQLException e) {
@@ -326,18 +339,22 @@ public class SefBucatar extends Angajat {
         switch (option) {
             case 1:
                 preparat.editNume();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editarePreparat -> editNume");
                 break;
 
             case 2:
                 preparat.editDescriere();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editarePreparat -> editDescriere");
                 break;
 
             case 3:
                 preparat.editPret();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editarePreparat -> editPret");
                 break;
 
             case 4:
                 preparat.editGrame();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editarePreparat -> editGrame");
                 break;
 
             default:
@@ -350,10 +367,6 @@ public class SefBucatar extends Angajat {
     public void afisareDatePersonaleMenu() {
         super.afisareDatePersonaleMenu();
         System.out.println("Specializare: " + this.specializare);
-    }
-
-    public ArrayList<Preparat> getPreparate() {
-        return preparate;
     }
 }
 

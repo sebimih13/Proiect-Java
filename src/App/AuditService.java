@@ -8,32 +8,67 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class AuditService {
-    static private final String filePath;
+    private static AuditService instance = null;
+    private static final String filePath;
+    private final File file;
 
     static {
         filePath = "audit.csv";
     }
 
-    static public void writeAction(String action) {
-        try {
-            File file = new File(filePath);
-            boolean fileExists = file.exists();
+    private AuditService() {
+        this.file = new File(filePath);
+        boolean fileExists = this.file.exists();
 
-            FileWriter fileWriter = new FileWriter(file, true);
+        try {
+            FileWriter fileWriter = new FileWriter(this.file, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
+            // write
             if (!fileExists) {
-                bufferedWriter.write("Data, Ora, Actiune");
+                bufferedWriter.write("Data, Ora, Nume, Prenume, Actiune");
                 bufferedWriter.newLine();
             }
+
+            // close
+            bufferedWriter.close();
+            fileWriter.close();
+        }
+        catch (IOException e) {
+            System.out.println("FAILED -> init audit service");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static AuditService getInstance() {
+        if (instance == null) {
+            instance = new AuditService();
+        }
+
+        return instance;
+    }
+
+    public void writeAction(String nume, String prenume, String action) {
+        if (file == null) {
+            return; // TODO: throw custom exception
+        }
+
+        try {
+            FileWriter fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
-            String line = currentDate + "," + currentTime + "," + action;
+            StringBuilder line = new StringBuilder();
+            line.append(currentDate).append(",");
+            line.append(currentTime).append(",");
+            line.append(nume).append(",");
+            line.append(prenume).append(",");
+            line.append(action).append(",");
 
             // write
-            bufferedWriter.write(line);
+            bufferedWriter.write(line.toString());
             bufferedWriter.newLine();
 
             // close
@@ -43,7 +78,8 @@ public class AuditService {
             System.out.println("Actiunea a fost salvata in fisierul csv");
         }
         catch (IOException e) {
-            System.out.println("FAILED: csv" + e.getMessage());
+            System.out.println("FAILED: audit service");
+            System.out.println(e.getMessage());
         }
     }
 }

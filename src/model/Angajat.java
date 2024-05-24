@@ -1,7 +1,7 @@
 package model;
 
+import App.AuditService;
 import App.Database;
-import App.InputDatePersonale;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -96,6 +96,8 @@ public abstract class Angajat implements InputDatePersonale {
             Database.getInstance().editStringValue("angajat", "id_angajat", "username", usernameNou, this.ID);
             this.username = usernameNou;
             System.out.println("username a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editUsername");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editUsername()");
@@ -110,6 +112,8 @@ public abstract class Angajat implements InputDatePersonale {
             Database.getInstance().editStringValue("angajat", "id_angajat", "password", passwordNou, this.ID);
             this.username = passwordNou;
             System.out.println("password a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(),"editareDatePersonaleMenu -> editPassword");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editPassword()");
@@ -124,6 +128,8 @@ public abstract class Angajat implements InputDatePersonale {
             Database.getInstance().editStringValue("angajat", "id_angajat", "nume", numeNou, this.ID);
             this.nume = numeNou;
             System.out.println("numele a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editNume");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editNume()");
@@ -138,6 +144,8 @@ public abstract class Angajat implements InputDatePersonale {
             Database.getInstance().editStringValue("angajat", "id_angajat", "prenume", prenumeNou, this.ID);
             this.prenume = prenumeNou;
             System.out.println("prenumele a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editPrenume");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editPrenume()");
@@ -165,6 +173,8 @@ public abstract class Angajat implements InputDatePersonale {
             Database.getInstance().editIntValue("angajat", "id_angajat", "salariu", salariuNou, this.ID);
             this.salariu = salariuNou;
             System.out.println("salariul a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editSalariu");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editSalariu()");
@@ -179,6 +189,8 @@ public abstract class Angajat implements InputDatePersonale {
             Database.getInstance().editStringValue("angajat", "id_angajat", "nr_telefon", nrTelefonNou, this.ID);
             this.nrTelefon = nrTelefonNou;
             System.out.println("numarul de telefon a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editNrTelefon");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editNrTelefon()");
@@ -197,6 +209,8 @@ public abstract class Angajat implements InputDatePersonale {
         if (this.manager != null) {
             System.out.println("manager: " + this.manager.getNume() + " " + this.manager.getPrenume());
         }
+
+        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "afisareDatePersonaleMenu");
     }
 }
 

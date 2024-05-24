@@ -1,7 +1,7 @@
 package model;
 
+import App.AuditService;
 import App.Database;
-import App.InputDatePersonale;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -145,6 +145,8 @@ public class Client implements InputDatePersonale {
         if (nrComenzi == 0) {
             System.out.println("Nu exista comenzi in pregatire");
         }
+
+        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "afisareComenziInPregatireMenu");
     }
 
     private void afisareComenziLivrateMenu() {
@@ -161,6 +163,8 @@ public class Client implements InputDatePersonale {
         if (nrComenzi == 0) {
             System.out.printf("Nu exista comenzi in pregatire");
         }
+
+        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "afisareComenziLivrateMenu");
     }
 
     private void adaugareComandaMenu() {
@@ -256,6 +260,8 @@ public class Client implements InputDatePersonale {
             this.addComanda(comandaNoua);
             restaurant.addComanda(comandaNoua);
             Database.getInstance().addComanda(comandaNoua, this);
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "adaugareComandaMenu");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> adaugareComandaMenu()");
@@ -299,6 +305,8 @@ public class Client implements InputDatePersonale {
             Database.getInstance().deleteComanda(comenzi.get(option - 1).getID());
             comenzi.get(option - 1).getRestaurant().deleteComanda(comenzi.get(option - 1));
             comenzi.remove(comenzi.get(option - 1));
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "stergeComandaMenu");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> stergeComandaMenu()");
@@ -355,14 +363,17 @@ public class Client implements InputDatePersonale {
         switch (actiune) {
             case 1:
                 comenzi.get(option - 1).schimbaCantitateaMenu();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareComandaMenu -> schimbaCantitateaMenu");
                 break;
 
             case 2:
                 comenzi.get(option - 1).addProdusMenu();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareComandaMenu -> addProdusMenu");
                 break;
 
             case 3:
                 comenzi.get(option - 1).deleteProdusMenu();
+                AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareComandaMenu -> deleteProdusMenu");
                 break;
 
             default:
@@ -429,6 +440,8 @@ public class Client implements InputDatePersonale {
         System.out.println("prenume: " + this.prenume);
         System.out.println("numar telefon: " + this.nrTelefon);
         System.out.println("email: " + this.email);
+
+        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "afisareDatePersonaleMenu");
     }
 
     public void editUsername() {
@@ -438,6 +451,8 @@ public class Client implements InputDatePersonale {
             Database.getInstance().editStringValue("client", "id_client", "username", usernameNou, this.ID);
             this.username = usernameNou;
             System.out.println("username a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editUsername");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editUsername()");
@@ -452,6 +467,8 @@ public class Client implements InputDatePersonale {
             Database.getInstance().editStringValue("client", "id_client", "password", passwordNou, this.ID);
             this.username = passwordNou;
             System.out.println("password a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editPassword");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editPassword()");
@@ -466,6 +483,8 @@ public class Client implements InputDatePersonale {
             Database.getInstance().editStringValue("client", "id_client", "nume", numeNou, this.ID);
             this.nume = numeNou;
             System.out.println("numele a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editNume");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editNume()");
@@ -480,6 +499,8 @@ public class Client implements InputDatePersonale {
             Database.getInstance().editStringValue("client", "id_client", "prenume", prenumeNou, this.ID);
             this.prenume = prenumeNou;
             System.out.println("prenumele a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editPrenume");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editPrenume()");
@@ -494,6 +515,8 @@ public class Client implements InputDatePersonale {
             Database.getInstance().editStringValue("client", "id_client", "nr_telefon", nrTelefonNou, this.ID);
             this.nrTelefon = nrTelefonNou;
             System.out.println("numarul de telefon a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editNrTelefon");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editNrTelefon()");
@@ -508,6 +531,8 @@ public class Client implements InputDatePersonale {
             Database.getInstance().editStringValue("client", "id_client", "email", emailNou, this.ID);
             this.email = emailNou;
             System.out.println("email-ul a fost modificat cu succes!");
+
+            AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "editareDatePersonaleMenu -> editEmail");
         }
         catch (SQLException e) {
             System.out.println("FAILED -> editEmail()");
