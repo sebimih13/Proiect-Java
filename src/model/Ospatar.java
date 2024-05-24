@@ -23,13 +23,14 @@ public class Ospatar extends Angajat {
         boolean logout = false;
         while (!logout) {
             System.out.println("\nAlegeti o optiune:");
-            System.out.println("1. Adauga comanda");
-            System.out.println("2. Sterge comanda");
-            System.out.println("3. Editare comanda");
-            System.out.println("4. Finalizare comanda");
-            System.out.println("5. Afisare date personale");
-            System.out.println("6. Editare date personale");
-            System.out.println("7. Log out");
+            System.out.println("1. Afisare comenzi");
+            System.out.println("2. Adauga comanda");
+            System.out.println("3. Sterge comanda");
+            System.out.println("4. Editare comanda");
+            System.out.println("5. Finalizare comanda");
+            System.out.println("6. Afisare date personale");
+            System.out.println("7. Editare date personale");
+            System.out.println("8. Log out");
 
             System.out.print("Optiune: ");
 
@@ -44,30 +45,34 @@ public class Ospatar extends Angajat {
 
             switch (option) {
                 case 1:
-                    adaugareComandaMenu();
+                    afisareComenziMenu();
                     break;
 
                 case 2:
-                    stergeComandaMenu();
+                    adaugareComandaMenu();
                     break;
 
                 case 3:
-                    editareComandaMenu();
+                    stergeComandaMenu();
                     break;
 
                 case 4:
-                    finalizareComanda();
+                    editareComandaMenu();
                     break;
 
                 case 5:
-                    afisareDatePersonaleMenu();
+                    finalizareComanda();
                     break;
 
                 case 6:
-                    editareDatePersonaleMenu();
+                    afisareDatePersonaleMenu();
                     break;
 
                 case 7:
+                    editareDatePersonaleMenu();
+                    break;
+
+                case 8:
                     logout = true;
                     break;
 
@@ -168,19 +173,29 @@ public class Ospatar extends Angajat {
         System.out.println("Nivel engleza: " + this.nivelEngleza);
     }
 
+    private void afisareComenziMenu() {
+        System.out.println();
+        for (Comanda comanda : this.getRestaurant().getComenzi()) {
+            System.out.println(comanda);
+        }
+
+        AuditService.getInstance().writeAction(this.getNume(), this.getPrenume(), "afisareComenziMenu");
+    }
+
     private void adaugareComandaMenu() {
         Comanda comandaNoua = new Comanda(++Comanda.maxIDComanda, getRestaurant());
 
         List<Produs> produse = new ArrayList<>(getRestaurant().getProduse());
 
+        // afisare meniu
+        System.out.println("\nAlege produsul:");
+        for (int i = 0; i < produse.size(); i++) {
+            System.out.println((i + 1) + ". " + produse.get(i) + "\n");
+        }
+        System.out.println((produse.size() + 1) + ". Incheie comanda");
+
         boolean comandaIncheiata = false;
         while (!comandaIncheiata) {
-            System.out.println("\nAlege produsul:");
-            for (int i = 0; i < produse.size(); i++) {
-                System.out.printf((i + 1) + ". " + produse.get(i) + "\n");
-            }
-            System.out.println((produse.size() + 1) + ". Incheie comanda");
-
             System.out.print("Optiune: ");
 
             if (!scanner.hasNextInt()) {
@@ -241,6 +256,8 @@ public class Ospatar extends Angajat {
     private void stergeComandaMenu() {
         List<Comanda> comenzi = new ArrayList<>();
 
+        System.out.println();
+
         Integer index = 0;
         for (Comanda comanda : getRestaurant().getComenzi()) {
             if (comanda.getStatus() == Comanda.Status.InPregatire) {
@@ -284,6 +301,8 @@ public class Ospatar extends Angajat {
 
     private void editareComandaMenu() {
         List<Comanda> comenzi = new ArrayList<>();
+
+        System.out.println();
 
         Integer index = 0;
         for (Comanda comanda : getRestaurant().getComenzi()) {
@@ -352,6 +371,8 @@ public class Ospatar extends Angajat {
 
     private void finalizareComanda() {
         List<Comanda> comenzi = new ArrayList<>();
+
+        System.out.println();
 
         Integer index = 0;
         for (Comanda comanda : getRestaurant().getComenzi()) {

@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Restaurant {
     private static Integer maxIDRestaurant;
@@ -70,10 +67,46 @@ public class Restaurant {
 
     public void addComanda(Comanda comanda) {
         comenzi.add(comanda);
+
+        comenzi.sort((c1, c2) -> {
+            if (c1.getStatus() == Comanda.Status.InPregatire && c2.getStatus() == Comanda.Status.Livrata) {
+                return -1;
+            }
+            else if (c1.getStatus() == Comanda.Status.Livrata && c2.getStatus() == Comanda.Status.InPregatire) {
+                return 1;
+            }
+            else if (c1.getID() > c2.getID()) {
+                return -1;
+            }
+            else if (c1.getID() < c2.getID()) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
     }
 
     public void deleteComanda(Comanda comanda) {
         comenzi.remove(comanda);
+
+        comenzi.sort((c1, c2) -> {
+            if (c1.getStatus() == Comanda.Status.InPregatire && c2.getStatus() == Comanda.Status.Livrata) {
+                return -1;
+            }
+            else if (c1.getStatus() == Comanda.Status.Livrata && c2.getStatus() == Comanda.Status.InPregatire) {
+                return 1;
+            }
+            else if (c1.getID() > c2.getID()) {
+                return -1;
+            }
+            else if (c1.getID() < c2.getID()) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
     }
 
     public void addAngajat(Angajat angajat) {

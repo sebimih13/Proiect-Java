@@ -74,8 +74,6 @@ public class AuditService {
             // close
             bufferedWriter.close();
             fileWriter.close();
-
-            System.out.println("Actiunea a fost salvata in fisierul csv");
         }
         catch (IOException e) {
             System.out.println("FAILED: audit service");

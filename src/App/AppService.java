@@ -116,6 +116,7 @@ public class AppService {
                 }
                 else {
                     System.out.println("\nBine ai revenit!");
+                    AuditService.getInstance().writeAction("System", "System", "Autentificare angajat: " + username);
                     angajatAutentificat.menu();
                 }
                 break;
@@ -127,6 +128,7 @@ public class AppService {
                 }
                 else {
                     System.out.println("\nBine ai revenit!");
+                    AuditService.getInstance().writeAction("System", "System", "Autentificare client: " + username);
                     clientAutentificat.menu();
                 }
                 break;

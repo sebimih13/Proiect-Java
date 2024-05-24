@@ -107,6 +107,8 @@ public class Comanda {
     }
 
     public void schimbaCantitateaMenu() {
+        System.out.println();
+
         if (produse.isEmpty()) {
             System.out.println("Nu exista produse in comanda!");
             return;
@@ -117,7 +119,7 @@ public class Comanda {
             System.out.println((i + 1) + ". " + produse.get(i).getNume() + " x" + cantitati.get(produse.get(i)));
         }
 
-        System.out.print("Optiune: ");
+        System.out.print("\nOptiune: ");
 
         if (!scanner.hasNextInt()) {
             System.out.println("Optiune invalida! Alegeti un numar din optiunile date!");
@@ -151,6 +153,7 @@ public class Comanda {
 
         try {
             Database.getInstance().editContine(cantitateNoua, produse.get(option - 1).getID(), getID());
+            cantitati.put(produse.get(option - 1), cantitateNoua);
         }
         catch (SQLException e) {
             System.out.println("FAILED -> schimbaCantitateaMenu()");

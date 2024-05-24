@@ -252,10 +252,17 @@ public class SefBucatar extends Angajat {
     }
 
     private void stergePreparatMenu() {
-        System.out.println("\nAlegeti produsul:");
+        System.out.println();
 
+        if (preparate.isEmpty()) {
+            System.out.println("Nu exista preparate!");
+            return;
+        }
+
+        System.out.println("Alegeti produsul:");
         for (int i = 0; i < preparate.size(); i++) {
             System.out.println(preparate.get(i).getID() + " -> " + preparate.get(i));
+            System.out.println();
         }
 
         System.out.print("Optiune: ");

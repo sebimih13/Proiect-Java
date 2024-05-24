@@ -380,7 +380,7 @@ public class Database {
     }
 
     public void addComanda(Comanda comanda, Client client) throws SQLException {
-        // comenzi.put(comanda.getID(), comanda);
+        comenzi.put(comanda.getID(), comanda);
 
         String SQLInsertComanda = "INSERT INTO comanda (id_comanda, id_client, id_restaurant, status, data, ora)" + "\n"
                                 + "VALUES (?, ?, ?, ?, ?, ?);";
