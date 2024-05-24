@@ -1,11 +1,12 @@
 package model;
 
 import App.Database;
+import App.InputDatePersonale;
 
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public abstract class Angajat {
+public abstract class Angajat implements InputDatePersonale {
     private Integer ID;
 
     private String username;
@@ -89,18 +90,7 @@ public abstract class Angajat {
     }
 
     public void editUsername() {
-        String usernameNou = null;
-        while (true) {
-            System.out.print("username: ");
-
-            usernameNou = scanner.nextLine();
-            if (usernameNou.isEmpty()) {
-                System.out.println("username trebuie sa contina cel putin un caracter!");
-                continue;
-            }
-
-            break;
-        }
+        String usernameNou = inputUsername();
 
         try {
             Database.getInstance().editStringValue("angajat", "id_angajat", "username", usernameNou, this.ID);
@@ -114,18 +104,7 @@ public abstract class Angajat {
     }
 
     public void editPassword() {
-        String passwordNou = null;
-        while (true) {
-            System.out.print("password: ");
-
-            passwordNou = scanner.nextLine();
-            if (passwordNou.isEmpty()) {
-                System.out.println("password trebuie sa contina cel putin un caracter!");
-                continue;
-            }
-
-            break;
-        }
+        String passwordNou = inputPassword();
 
         try {
             Database.getInstance().editStringValue("angajat", "id_angajat", "password", passwordNou, this.ID);
@@ -139,18 +118,7 @@ public abstract class Angajat {
     }
 
     public void editNume() {
-        String numeNou = null;
-        while (true) {
-            System.out.print("nume: ");
-
-            numeNou = scanner.nextLine();
-            if (numeNou.isEmpty()) {
-                System.out.println("numele trebuie sa contina cel putin un caracter!");
-                continue;
-            }
-
-            break;
-        }
+        String numeNou = inputNume();
 
         try {
             Database.getInstance().editStringValue("angajat", "id_angajat", "nume", numeNou, this.ID);
@@ -164,18 +132,7 @@ public abstract class Angajat {
     }
 
     public void editPrenume() {
-        String prenumeNou = null;
-        while (true) {
-            System.out.print("prenume: ");
-
-            prenumeNou = scanner.nextLine();
-            if (prenumeNou.isEmpty()) {
-                System.out.println("prenumele trebuie sa contina cel putin un caracter!");
-                continue;
-            }
-
-            break;
-        }
+        String prenumeNou = inputPrenume();
 
         try {
             Database.getInstance().editStringValue("angajat", "id_angajat", "prenume", prenumeNou, this.ID);
@@ -216,18 +173,7 @@ public abstract class Angajat {
     }
 
     public void editNrTelefon() {
-        String nrTelefonNou = null;
-        while (true) {
-            System.out.print("numar telefon: ");
-
-            nrTelefonNou = scanner.nextLine();
-            if (nrTelefon.length() != 10 || !nrTelefon.matches("[0-9]+")) {
-                System.out.println("numarul de telefon trebuie sa contina fix 10 cifre!");
-                continue;
-            }
-
-            break;
-        }
+        String nrTelefonNou = inputNrTelefon();
 
         try {
             Database.getInstance().editStringValue("angajat", "id_angajat", "nr_telefon", nrTelefonNou, this.ID);
@@ -248,7 +194,9 @@ public abstract class Angajat {
         System.out.println("salariu: " + this.salariu);
         System.out.println("numar telefon: " + this.nrTelefon);
         System.out.println("restaurant: " + this.restaurant.getNume());
-        System.out.println("manager: " + this.manager.getNume() + " " + this.manager.getPrenume());
+        if (this.manager != null) {
+            System.out.println("manager: " + this.manager.getNume() + " " + this.manager.getPrenume());
+        }
     }
 }
 
