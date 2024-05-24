@@ -247,7 +247,7 @@ public class Client {
         }
 
         if (comandaNoua.calcularePret() == 0) {
-            System.out.println("Comanda a fost anulata");
+            System.out.println("\nComanda a fost anulata");
             return;
         }
 
@@ -263,6 +263,8 @@ public class Client {
     }
 
     private void stergeComandaMenu() {
+        System.out.println();
+
         int nrComenzi = 0;
         for (int i = 0; i < comenzi.size(); i++) {
             if (comenzi.get(i).getStatus() == Comanda.Status.InPregatire) {
@@ -272,7 +274,7 @@ public class Client {
         }
 
         if (nrComenzi == 0) {
-            System.out.println("\nNu exista comenzi in pregatire!");
+            System.out.println("Nu exista comenzi in pregatire!");
             return;
         }
 
@@ -304,6 +306,8 @@ public class Client {
     }
 
     public void editareComandaMenu() {
+        System.out.println();
+
         int nrComenzi = 0;
         for (int i = 0; i < comenzi.size(); i++) {
             if (comenzi.get(i).getStatus() == Comanda.Status.InPregatire) {
@@ -313,7 +317,7 @@ public class Client {
         }
 
         if (nrComenzi == 0) {
-            System.out.println("\nNu exista comenzi in pregatire!");
+            System.out.println("Nu exista comenzi in pregatire!");
             return;
         }
 
@@ -373,7 +377,7 @@ public class Client {
         System.out.println("3. Editare nume");
         System.out.println("4. Editare prenume");
         System.out.println("5. Editare numar telefon");
-        System.out.println("6. Editare specializare");
+        System.out.println("6. Editare email");
 
         System.out.print("Optiune: ");
 

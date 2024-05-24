@@ -164,7 +164,7 @@ public class Comanda {
         // afisare meniu
         System.out.println("\nAlege produsul:");
         for (int i = 0; i < produse.size(); i++) {
-            System.out.printf((i + 1) + ". " + produse.get(i) + "\n");
+            System.out.println((i + 1) + ". " + produse.get(i) + "\n");
         }
         System.out.println((produse.size() + 1) + ". Incheie comanda");
 
