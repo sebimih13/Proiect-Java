@@ -6,7 +6,7 @@ public class UniqueValueException extends Exception {
     }
 
     public UniqueValueException(String message, Throwable cause) {
-        super(message, cause);
+        super("UniqueValueException: " + message, cause);
     }
 }
 
